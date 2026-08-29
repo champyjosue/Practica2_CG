@@ -64,52 +64,127 @@ int main() {
 	// Set up vertex data (and buffer(s)) and attribute pointers
 	float vertices[] = {
 		// X,      Y,      Z,     R,   G,   B
-		   // --- LÍNEA CENTRAL ---
-		   0.0f,   0.75f,  0.0f,  0.0f,0.0f,0.0f, // 0: Top frente
-		   0.0f,   0.00f,  0.0f,  0.0f,0.0f,0.0f, // 1: Centro nariz
-		   0.0f,  -0.20f,  0.0f,  0.0f,0.0f,0.0f, // 2: Boca superior
-		   0.0f,  -0.60f,  0.0f,  0.0f,0.0f,0.0f, // 3: Centro pecho base
+		// --- LÍNEA CENTRAL ---
+		0.0f,   0.82f,  0.0f,  0.0f,0.0f,0.0f, // 0: Top frente
+		0.0f,   0.00f,  0.0f,  0.0f,0.0f,0.0f, // 1: Centro nariz
+		0.0f,  -0.24f,  0.0f,  0.0f,0.0f,0.0f, // 2: Boca superior
+		0.0f,  -0.60f,  0.0f,  0.0f,0.0f,0.0f, // 3: Centro pecho base
 
-		   // --- CONTORNO EXTERNO (Mitad Izquierda) ---
-		  -0.25f,  0.70f,  0.0f,  0.0f,0.0f,0.0f, // 4: Esquina cabeza izq
-		  -0.45f,  0.45f,  0.0f,  0.0f,0.0f,0.0f, // 5: Sien izq
-		  -0.70f, -0.30f,  0.0f,  0.0f,0.0f,0.0f, // 6: Mejilla ancha izq
-		  -0.50f, -0.70f,  0.0f,  0.0f,0.0f,0.0f, // 7: Base inferior izq
-		  -0.30f, -0.70f,  0.0f,  0.0f,0.0f,0.0f, // 8: Pata izq
+		// --- CONTORNO EXTERNO (Mitad Izquierda) ---
+		-0.25f,  0.70f,  0.0f,  0.0f,0.0f,0.0f, // 4: Esquina cabeza izq
+		-0.45f,  0.45f,  0.0f,  0.0f,0.0f,0.0f, // 5: Sien izq
+		-0.62f, -0.30f,  0.0f,  0.0f,0.0f,0.0f, // 6: Mejilla ancha izq
+		-0.50f, -0.70f,  0.0f,  0.0f,0.0f,0.0f, // 7: Base inferior izq
+		-0.30f, -0.70f,  0.0f,  0.0f,0.0f,0.0f, // 8: Pata izq
 
-		  // --- CONTORNO EXTERNO (Mitad Derecha - Espejo) ---
-		  0.25f,  0.70f,  0.0f,  0.0f,0.0f,0.0f, // 9: Esquina cabeza der
-		  0.45f,  0.45f,  0.0f,  0.0f,0.0f,0.0f, // 10: Sien der
-		  0.70f, -0.30f,  0.0f,  0.0f,0.0f,0.0f, // 11: Mejilla ancha der
-		  0.50f, -0.70f,  0.0f,  0.0f,0.0f,0.0f, // 12: Base inferior der
-		  0.30f, -0.70f,  0.0f,  0.0f,0.0f,0.0f, // 13: Pata der
+		// --- CONTORNO EXTERNO (Mitad Derecha - Espejo) ---
+		0.25f,  0.70f,  0.0f,  0.0f,0.0f,0.0f, // 9: Esquina cabeza der
+		0.45f,  0.45f,  0.0f,  0.0f,0.0f,0.0f, // 10: Sien der
+		0.62f, -0.30f,  0.0f,  0.0f,0.0f,0.0f, // 11: Mejilla ancha der
+		0.50f, -0.70f,  0.0f,  0.0f,0.0f,0.0f, // 12: Base inferior der
+		0.30f, -0.70f,  0.0f,  0.0f,0.0f,0.0f, // 13: Pata der
 
-		  // --- ROMBO NARIZ ---
-		 -0.08f, -0.10f,  0.0f,  0.0f,0.0f,0.0f, // 14: Nariz izq
-		  0.08f, -0.10f,  0.0f,  0.0f,0.0f,0.0f, // 15: Nariz der
-		  0.00f, -0.18f,  0.0f,  0.0f,0.0f,0.0f, // 16: Nariz abajo
+		// --- ROMBO NARIZ ---
+		-0.08f, -0.10f,  0.0f,  0.0f,0.0f,0.0f, // 14: Nariz izq
+		0.08f, -0.10f,  0.0f,  0.0f,0.0f,0.0f, // 15: Nariz der
+		0.00f, -0.18f,  0.0f,  0.0f,0.0f,0.0f, // 16: Nariz abajo
 
-		  // --- OJOS Y TRIÁNGULOS FACIALES ---
-		 -0.25f,  0.25f,  0.0f,  0.0f,0.0f,0.0f, // 17: Ojo izq centro
-		  0.25f,  0.25f,  0.0f,  0.0f,0.0f,0.0f, // 18: Ojo der centro
+		// --- OJOS Y TRIÁNGULOS FACIALES ---
+		-0.25f,  0.25f,  0.0f,  0.0f,0.0f,0.0f, // 17: Ojo izq centro
+		0.25f,  0.25f,  0.0f,  0.0f,0.0f,0.0f, // 18: Ojo der centro
 
-		  // --- OREJAS ---
-		  0.42f,  0.88f,  0.0f,  0.0f,0.0f,0.0f, // 19: Punta oreja derecha
-	  0.16f,  0.71f,  0.0f,  0.0f,0.0f,0.0f, // 20: Base superior oreja der
-	  0.38f,  0.55f,  0.0f,  0.0f,0.0f,0.0f, // 21: Base media oreja der
-	 -0.42f,  0.88f,  0.0f,  0.0f,0.0f,0.0f, // 22: Punta oreja izquierda
-	 -0.19f,  0.72f,  0.0f,  0.0f,0.0f,0.0f, // 23: Base superior oreja izq
-	 -0.38f,  0.55f,  0.0f,  0.0f,0.0f,0.0f, // 24: Base media oreja izq
+		// --- OREJAS ---
+		0.42f,  0.88f,  0.0f,  0.0f,0.0f,0.0f, // 19: Punta oreja derecha
+		0.16f,  0.71f,  0.0f,  0.0f,0.0f,0.0f, // 20: Base superior oreja der
+		0.38f,  0.55f,  0.0f,  0.0f,0.0f,0.0f, // 21: Base media oreja der
+		-0.42f,  0.88f,  0.0f,  0.0f,0.0f,0.0f, // 22: Punta oreja izquierda
+		-0.19f,  0.72f,  0.0f,  0.0f,0.0f,0.0f, // 23: Base superior oreja izq
+		-0.38f,  0.55f,  0.0f,  0.0f,0.0f,0.0f, // 24: Base media oreja izq
+		
+		 // Para los ojos
+		0.25f, 0.25f,  0.0f,  0.0f,0.0f,0.0f, // 25: centro ojo der
+		0.33f, 0.25f,  0.0f,  0.0f,0.0f,0.0f, // 26
+		0.315f,0.297f, 0.0f,  0.0f,0.0f,0.0f, // 27
+		0.275f,0.326f, 0.0f,  0.0f,0.0f,0.0f, // 28
+		0.225f,0.326f, 0.0f,  0.0f,0.0f,0.0f, // 29
+		0.185f,0.297f, 0.0f,  0.0f,0.0f,0.0f, // 30
+		0.17f, 0.25f,  0.0f,  0.0f,0.0f,0.0f, // 31
+		0.185f,0.203f, 0.0f,  0.0f,0.0f,0.0f, // 32
+		0.225f,0.174f, 0.0f,  0.0f,0.0f,0.0f, // 33
+		0.275f,0.174f, 0.0f,  0.0f,0.0f,0.0f, // 34
+		0.315f,0.203f, 0.0f,  0.0f,0.0f,0.0f, // 35
+		0.33f, 0.25f,  0.0f,  0.0f,0.0f,0.0f, // 36:
+
+		-0.25f, 0.25f,  0.0f,  0.0f,0.0f,0.0f, // 37: centro ojo izq
+		-0.33f, 0.25f,  0.0f,  0.0f,0.0f,0.0f, // 38
+		-0.315f,0.297f, 0.0f,  0.0f,0.0f,0.0f, // 39
+		-0.275f,0.326f, 0.0f,  0.0f,0.0f,0.0f, // 40
+		-0.225f,0.326f, 0.0f,  0.0f,0.0f,0.0f, // 41
+		-0.185f,0.297f, 0.0f,  0.0f,0.0f,0.0f, // 42
+		-0.17f, 0.25f,  0.0f,  0.0f,0.0f,0.0f, // 43
+		-0.185f,0.203f, 0.0f,  0.0f,0.0f,0.0f, // 44
+		-0.225f,0.174f, 0.0f,  0.0f,0.0f,0.0f, // 45
+		-0.275f,0.174f, 0.0f,  0.0f,0.0f,0.0f, // 46
+		-0.315f,0.203f, 0.0f,  0.0f,0.0f,0.0f, // 47
+		-0.33f, 0.25f,  0.0f,  0.0f,0.0f,0.0f, // 48
+
+		// --- BIGOTES ---
+		0.10f, -0.12f,  0.0f,  0.0f,0.0f,0.0f, // 49: origen bigotes der
+		0.65f, -0.02f,  0.0f,  0.0f,0.0f,0.0f, // 50: punta bigote der 1
+		0.70f, -0.12f,  0.0f,  0.0f,0.0f,0.0f, // 51: punta bigote der 2
+		0.65f, -0.22f,  0.0f,  0.0f,0.0f,0.0f, // 52: punta bigote der 3
+
+		-0.10f, -0.12f,  0.0f,  0.0f,0.0f,0.0f, // 53: origen bigotes izq
+		-0.65f, -0.02f,  0.0f,  0.0f,0.0f,0.0f, // 54: punta bigote izq 1
+		-0.70f, -0.12f,  0.0f,  0.0f,0.0f,0.0f, // 55: punta bigote izq 2
+		-0.65f, -0.22f,  0.0f,  0.0f,0.0f,0.0f, // 56: punta bigote izq 3
+
+		// --- DEDOS PATA IZQUIERDA ---
+		-0.44f, -0.80f,  0.0f,  0.0f,0.0f,0.0f, // 57: punta dedo 1 izq
+		-0.43f, -0.72f,  0.0f,  0.0f,0.0f,0.0f, // 58: valle 1 izq
+		-0.31f, -0.80f,  0.0f,  0.0f,0.0f,0.0f, // 59: punta dedo 3 izq
+
+		// --- DEDOS PATA DERECHA ---
+		0.44f, -0.80f,  0.0f,  0.0f,0.0f,0.0f, // 60: punta dedo 1 der
+		0.43f, -0.72f,  0.0f,  0.0f,0.0f,0.0f, // 61: valle 1 der
+		0.31f, -0.80f,  0.0f,  0.0f,0.0f,0.0f, // 62: punta dedo 3 der
+
+		// --- BOQUITA (pequeño rombo bajo la nariz) ---
+		-0.05f, -0.21f,  0.0f,  0.0f,0.0f,0.0f, // 63: boca izq
+		0.00f, -0.25f,  0.0f,  0.0f,0.0f,0.0f, // 64: boca abajo
+		0.05f, -0.21f,  0.0f,  0.0f,0.0f,0.0f, // 65: boca der
+
+		// --- BRILLO DE LOS OJOS (blanco) ---
+		0.29f,  0.28f,  0.0f,  1.0f,1.0f,1.0f, // 66: brillo ojo der
+		-0.23f,  0.28f,  0.0f,  1.0f,1.0f,1.0f, // 67: brillo ojo izq
+
+		// --- ARCO SUPERIOR PATA IZQUIERDA (cierra la patita) ---
+		-0.47f, -0.66f,  0.0f,  0.0f,0.0f,0.0f, // 68
+		-0.40f, -0.63f,  0.0f,  0.0f,0.0f,0.0f, // 69
+		-0.33f, -0.66f,  0.0f,  0.0f,0.0f,0.0f, // 70
+
+		// --- ARCO SUPERIOR PATA DERECHA (espejo) ---
+		0.47f, -0.66f,  0.0f,  0.0f,0.0f,0.0f, // 71
+		0.40f, -0.63f,  0.0f,  0.0f,0.0f,0.0f, // 72
+		0.33f, -0.66f,  0.0f,  0.0f,0.0f,0.0f, // 73
+
+		  // --- DEDO DE EN MEDIO (pata izquierda) ---
+		-0.39f, -0.80f, 0.0f, 0.0f, 0.0f, 0.0f, // 74: punta dedo medio izq
+		-0.35f, -0.72f, 0.0f, 0.0f, 0.0f, 0.0f, // 75: valle 2 izq
+
+		// --- DEDO DE EN MEDIO (pata derecha) ---
+		0.39f, -0.80f, 0.0f, 0.0f, 0.0f, 0.0f, // 76: punta dedo medio der
+		0.35f, -0.72f, 0.0f, 0.0f, 0.0f, 0.0f, // 77: valle 2 der
 	};
 
 	// Arreglo de índices para dibujar todas las aristas internas y externas con GL_LINES
 	unsigned int indices[] = {
 		// Línea central
-		0, 1,   1, 2,   2, 3,
+		0, 1,   2, 3,
 
 		// Contorno principal
-		0, 4,   4, 5,   5, 6,   6, 7,   7, 8,   8, 3,
-		0, 9,   9, 10,  10, 11, 11, 12, 12, 13, 13, 3,
+		0, 4,   4, 5,   5, 6,   6, 7,   7, 57,  57, 58,  58, 74,  74, 75,  75, 59,  59, 8,   8, 3,
+		0, 9,   9, 10,  10, 11, 11, 12, 12, 60,  60, 61,  61, 76,  76, 77,  77, 62,  62, 13,  13, 3,
 
 		// Rombo de la nariz
 		0, 1,   1, 14,  14, 16, 16, 15, 15, 1,
@@ -121,8 +196,20 @@ int main() {
 
 		// Orejas (abanico de 3 líneas cada una)
 		19, 20,   19, 21,   19, 9,     // oreja derecha: punta -> base sup, base media, y esquina cabeza (vértice 9)
-		22, 23,   22, 24,   22, 4      // oreja izquierda: punta -> base sup, base media, y esquina cabeza (vértice 4)
+		22, 23,   22, 24,   22, 4,      // oreja izquierda: punta -> base sup, base media, y esquina cabeza (vértice 4)
 
+		// Bigotes (abanico de 3 líneas por lado)
+		49, 50,   49, 51,   49, 52,
+		53, 54,   53, 55,   53, 56,
+
+		// Boquita
+		16, 63,  63, 64,  64, 65,  65, 16,
+
+		// Arco que cierra la patita izquierda (junto con el zigzag ya crea una forma cerrada/redondeada)
+		7, 68,   68, 69,   69, 70,   70, 8,
+
+		// Arco que cierra la patita derecha
+		12, 71,  71, 72,   72, 73,   73, 13
 	};
 
 
@@ -178,6 +265,12 @@ int main() {
 		// Renderiza todas las aristas combinadas mediante el EBO
 		glDrawElements(GL_LINES, sizeof(indices) / sizeof(unsigned int), GL_UNSIGNED_INT, 0);
 
+		glDrawArrays(GL_TRIANGLE_FAN, 25, 12); // ojo derecho
+		glDrawArrays(GL_TRIANGLE_FAN, 37, 12); // ojo izquierdo
+		glPointSize(8.0f);
+		glDrawArrays(GL_POINTS, 66, 1); // brillo ojo derecho
+		glDrawArrays(GL_POINTS, 67, 1); // brillo ojo izquierdo
+		
 		glBindVertexArray(0);
 
 		// Swap the screen buffers
