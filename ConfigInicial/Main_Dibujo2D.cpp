@@ -71,13 +71,13 @@ int main() {
 		0.0f,  -0.60f,  0.0f,  0.0f,0.0f,0.0f, // 3: Centro pecho base
 
 		// --- CONTORNO EXTERNO (Mitad Izquierda) ---
-		-0.25f,  0.70f,  0.0f,  0.0f,0.0f,0.0f, // 4: Esquina cabeza izq
+		-0.25f,  0.70f,  0.0f,  0.0f,0.0f,0.0f, // 4: Esquina cabeza 
 		-0.45f,  0.45f,  0.0f,  0.0f,0.0f,0.0f, // 5: Sien izq
 		-0.62f, -0.30f,  0.0f,  0.0f,0.0f,0.0f, // 6: Mejilla ancha izq
 		-0.50f, -0.70f,  0.0f,  0.0f,0.0f,0.0f, // 7: Base inferior izq
 		-0.30f, -0.70f,  0.0f,  0.0f,0.0f,0.0f, // 8: Pata izq
 
-		// --- CONTORNO EXTERNO (Mitad Derecha - Espejo) ---
+		// --- CONTORNO EXTERNO (Mitad Derecha) ---
 		0.25f,  0.70f,  0.0f,  0.0f,0.0f,0.0f, // 9: Esquina cabeza der
 		0.45f,  0.45f,  0.0f,  0.0f,0.0f,0.0f, // 10: Sien der
 		0.62f, -0.30f,  0.0f,  0.0f,0.0f,0.0f, // 11: Mejilla ancha der
@@ -158,12 +158,12 @@ int main() {
 		0.29f,  0.28f,  0.0f,  1.0f,1.0f,1.0f, // 66: brillo ojo der
 		-0.23f,  0.28f,  0.0f,  1.0f,1.0f,1.0f, // 67: brillo ojo izq
 
-		// --- ARCO SUPERIOR PATA IZQUIERDA (cierra la patita) ---
+		// --- ARCO SUPERIOR PATA IZQUIERDA  ---
 		-0.47f, -0.66f,  0.0f,  0.0f,0.0f,0.0f, // 68
 		-0.40f, -0.63f,  0.0f,  0.0f,0.0f,0.0f, // 69
 		-0.33f, -0.66f,  0.0f,  0.0f,0.0f,0.0f, // 70
 
-		// --- ARCO SUPERIOR PATA DERECHA (espejo) ---
+		// --- ARCO SUPERIOR PATA DERECHA ---
 		0.47f, -0.66f,  0.0f,  0.0f,0.0f,0.0f, // 71
 		0.40f, -0.63f,  0.0f,  0.0f,0.0f,0.0f, // 72
 		0.33f, -0.66f,  0.0f,  0.0f,0.0f,0.0f, // 73
@@ -175,6 +175,66 @@ int main() {
 		// --- DEDO DE EN MEDIO (pata derecha) ---
 		0.39f, -0.80f, 0.0f, 0.0f, 0.0f, 0.0f, // 76: punta dedo medio der
 		0.35f, -0.72f, 0.0f, 0.0f, 0.0f, 0.0f, // 77: valle 2 der
+
+		// --- RELLENO DE COLOR (cuerpo y cabeza) ---
+		0.00f, -0.05f, 0.0f, 0.94f, 0.76f, 0.45f, // 78: centro del relleno
+		0.00f, 0.82f, 0.0f, 0.94f, 0.76f, 0.45f, // 79: (dup de 0) top
+		-0.25f, 0.70f, 0.0f, 0.94f, 0.76f, 0.45f, // 80: (dup de 4)
+		-0.45f, 0.45f, 0.0f, 0.94f, 0.76f, 0.45f, // 81: (dup de 5)
+		-0.62f, -0.30f, 0.0f, 0.94f, 0.76f, 0.45f, // 82: (dup de 6)
+		-0.50f, -0.70f, 0.0f, 0.94f, 0.76f, 0.45f, // 83: (dup de 7)
+		-0.30f, -0.70f, 0.0f, 0.94f, 0.76f, 0.45f, // 84: (dup de 8)
+		0.00f, -0.60f, 0.0f, 0.94f, 0.76f, 0.45f, // 85: (dup de 3)
+		0.30f, -0.70f, 0.0f, 0.94f, 0.76f, 0.45f, // 86: (dup de 13)
+		0.50f, -0.70f, 0.0f, 0.94f, 0.76f, 0.45f, // 87: (dup de 12)
+		0.62f, -0.30f, 0.0f, 0.94f, 0.76f, 0.45f, // 88: (dup de 11)
+		0.45f, 0.45f, 0.0f, 0.94f, 0.76f, 0.45f, // 89: (dup de 10)
+		0.25f, 0.70f, 0.0f, 0.94f, 0.76f, 0.45f, // 90: (dup de 9)
+		0.00f, 0.82f, 0.0f, 0.94f, 0.76f, 0.45f, // 91: (dup de 0,
+
+		// --- RELLENO OREJAS (rosa/durazno) ---
+		0.42f, 0.88f, 0.0f, 0.95f, 0.72f, 0.62f, // 92: tip oreja der (dup de 19)
+		0.16f, 0.71f, 0.0f, 0.95f, 0.72f, 0.62f, // 93: base oreja der (dup de 20)
+		0.25f, 0.70f, 0.0f, 0.95f, 0.72f, 0.62f, // 94: esquina cabeza der (dup de 9)
+
+		-0.42f, 0.88f, 0.0f, 0.95f, 0.72f, 0.62f, // 95: tip oreja izq (dup de 22)
+		-0.19f, 0.72f, 0.0f, 0.95f, 0.72f, 0.62f, // 96: base oreja izq (dup de 23)
+		-0.25f, 0.70f, 0.0f, 0.95f, 0.72f, 0.62f, // 97: esquina cabeza izq (dup de 4)
+			
+		// --- CACHETITOS ROSAS ---
+		0.42f, 0.02f, 0.0f, 0.98f, 0.75f, 0.75f, // 98: centro cachete der
+		0.485f, 0.02f, 0.0f, 0.98f, 0.75f, 0.75f, // 99
+		0.466f, 0.066f, 0.0f, 0.98f, 0.75f, 0.75f, // 100
+		0.42f, 0.085f, 0.0f, 0.98f, 0.75f, 0.75f, // 101
+		0.374f, 0.066f, 0.0f, 0.98f, 0.75f, 0.75f, // 102
+		0.355f, 0.02f, 0.0f, 0.98f, 0.75f, 0.75f, // 103
+		0.374f, -0.026f, 0.0f, 0.98f, 0.75f, 0.75f, // 104
+		0.42f, -0.045f, 0.0f, 0.98f, 0.75f, 0.75f, // 105
+		0.466f, -0.026f, 0.0f, 0.98f, 0.75f, 0.75f, // 106
+		0.485f, 0.02f, 0.0f, 0.98f, 0.75f, 0.75f, // 107: repite el 99 para cerrar
+
+		-0.42f, 0.02f, 0.0f, 0.98f, 0.75f, 0.75f, // 108: centro cachete izq
+		-0.485f, 0.02f, 0.0f, 0.98f, 0.75f, 0.75f, // 109
+		-0.466f, 0.066f, 0.0f, 0.98f, 0.75f, 0.75f, // 110
+		-0.42f, 0.085f, 0.0f, 0.98f, 0.75f, 0.75f, // 111
+		-0.374f, 0.066f, 0.0f, 0.98f, 0.75f, 0.75f, // 112
+		-0.355f, 0.02f, 0.0f, 0.98f, 0.75f, 0.75f, // 113
+		-0.374f, -0.026f, 0.0f, 0.98f, 0.75f, 0.75f, // 114
+		-0.42f, -0.045f, 0.0f, 0.98f, 0.75f, 0.75f, // 115
+		-0.466f, -0.026f, 0.0f, 0.98f, 0.75f, 0.75f, // 116
+		-0.485f, 0.02f, 0.0f, 0.98f, 0.75f, 0.75f, // 117:
+
+		// --- RELLENO NARIZ ---
+		0.00f, 0.00f, 0.0f, 0.95f, 0.55f, 0.58f, // 118: hub (dup de 1)
+		-0.08f, -0.10f, 0.0f, 0.95f, 0.55f, 0.58f, // 119: (dup de 14)
+		0.00f, -0.18f, 0.0f, 0.95f, 0.55f, 0.58f, // 120: (dup de 16)
+		0.08f, -0.10f, 0.0f, 0.95f, 0.55f, 0.58f, // 121: (dup de 15)
+
+		// --- RELLENO BOCA (rosa oscurito) ---
+			0.00f, -0.18f, 0.0f, 0.55f, 0.20f, 0.22f, // 122: (dup de 16, pivote del fan)
+			-0.05f, -0.21f, 0.0f, 0.55f, 0.20f, 0.22f, // 123: (dup de 63)
+			0.00f, -0.25f, 0.0f, 0.55f, 0.20f, 0.22f, // 124: (dup de 64)
+			0.05f, -0.21f, 0.0f, 0.55f, 0.20f, 0.22f, // 125: (dup de 65)
 	};
 
 	// Arreglo de índices para dibujar todas las aristas internas y externas con GL_LINES
@@ -195,10 +255,10 @@ int main() {
 		6, 14,  6, 3,   11, 15, 11, 3,
 
 		// Orejas (abanico de 3 líneas cada una)
-		19, 20,   19, 21,   19, 9,     // oreja derecha: punta -> base sup, base media, y esquina cabeza (vértice 9)
-		22, 23,   22, 24,   22, 4,      // oreja izquierda: punta -> base sup, base media, y esquina cabeza (vértice 4)
+		19, 20,   19, 21,   19, 9,     // oreja derecha:
+		22, 23,   22, 24,   22, 4,      // oreja izquierda
 
-		// Bigotes (abanico de 3 líneas por lado)
+		// Bigotes 
 		49, 50,   49, 51,   49, 52,
 		53, 54,   53, 55,   53, 56,
 
@@ -261,13 +321,25 @@ int main() {
 		ourShader.Use();
 		glBindVertexArray(VAO);
 
+		// Relleno de color (va primero, para que las líneas queden encima)
+		glDrawArrays(GL_TRIANGLE_FAN, 78, 14);
+
+		// Relleno de las orejas (2 triángulos = 6 vértices)
+		glDrawArrays(GL_TRIANGLES, 92, 6);
+
+		// Cachetitos rosas
+		glDrawArrays(GL_TRIANGLE_FAN, 98, 10);  // cachete der
+		glDrawArrays(GL_TRIANGLE_FAN, 108, 10); // cachete izq
+		glDrawArrays(GL_TRIANGLE_FAN, 118, 4);  // nariz
+		glDrawArrays(GL_TRIANGLE_FAN, 122, 4);  // boca
+
 		glLineWidth(2.5f);
-		// Renderiza todas las aristas combinadas mediante el EBO
+		// Dibuja las líneas usando todos los índices guardados en el EBO
 		glDrawElements(GL_LINES, sizeof(indices) / sizeof(unsigned int), GL_UNSIGNED_INT, 0);
 
 		glDrawArrays(GL_TRIANGLE_FAN, 25, 12); // ojo derecho
 		glDrawArrays(GL_TRIANGLE_FAN, 37, 12); // ojo izquierdo
-		glPointSize(8.0f);
+		glPointSize(10.0f);
 		glDrawArrays(GL_POINTS, 66, 1); // brillo ojo derecho
 		glDrawArrays(GL_POINTS, 67, 1); // brillo ojo izquierdo
 		
