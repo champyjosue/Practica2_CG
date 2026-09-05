@@ -1,3 +1,8 @@
+// Practica 3
+// Valdez Hernandez Alan Josue
+// Fecha de entrega: 06 de septiembre del 2026
+// Numero de cuenta: 421122006
+
 #include<iostream>
 
 //#define GLEW_STATIC
@@ -29,7 +34,7 @@ int main() {
 
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Proyecciones y transformaciones basicas", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 3 - Alan Valdez", nullptr, nullptr);
 
 	int screenWidth, screenHeight;
 
@@ -264,31 +269,8 @@ int main() {
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
-		// Para agregar una nueva matriz (figura)
-		/*model = glm::mat4(1);
-		model = glm::translate(model, glm::vec3(1.0f, -1.0f, 0.0f));
-		model = glm::rotate(model, 75.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		glDrawArrays(GL_TRIANGLES, 0, 36);*/
-
-		// cubo nuevo:
-		/*model = glm::mat4(1);
-		model = glm::translate(model, glm::vec3(-5.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, -45.0f, glm::vec3(5.0f, 0.0f, 1.0f));
-		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
-
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		glDrawArrays(GL_TRIANGLES, 0, 36);*/
-
-
 		glBindVertexArray(0);
 
-
-
-		
-		
-		
 
 		// Swap the screen buffers
 		glfwSwapBuffers(window);
