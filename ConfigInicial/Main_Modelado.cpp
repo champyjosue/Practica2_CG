@@ -1,7 +1,12 @@
-// Previo 4
+// Practica 4
 // Valdez Hernandez Alan Josue
-// Fecha de entrega: 08 de septiembre del 2026
+// Fecha de entrega: 13 de septiembre del 2026
 // Numero de cuenta: 421122006
+
+/*Modelado geometrico:
+* 
+*/
+
 #include<iostream>
 
 //#define GLEW_STATIC
@@ -40,7 +45,7 @@ int main() {
 
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Previo 4 - Alan Valdez", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 4 - Alan Valdez", nullptr, nullptr);
 
 	int screenWidth, screenHeight;
 
@@ -89,47 +94,47 @@ int main() {
 	// use with Perspective Projection
 	float vertices[] = {
 		/*En conjunto 2 triangulos forman un cuadrado (cara de cubo)*/
-		-0.5f, -0.5f, 0.5f, 1.0f, 0.0f,0.0f,//Triangulo 1
-		0.5f, -0.5f, 0.5f,  1.0f, 0.0f,0.0f,//
-		0.5f,  0.5f, 0.5f,  1.0f, 0.0f,0.0f,//
-		0.5f,  0.5f, 0.5f,  1.0f, 0.0f,0.0f,//Tiangulo 2
-		-0.5f,  0.5f, 0.5f, 1.0f, 0.0f,0.0f,//
-		-0.5f, -0.5f, 0.5f, 1.0f, 0.0f,0.0f,//
+		-0.5f, -0.5f, 0.5f, //Triangulo 1
+		0.5f, -0.5f, 0.5f,  //
+		0.5f,  0.5f, 0.5f, //
+		0.5f,  0.5f, 0.5f, //Tiangulo 2
+		-0.5f,  0.5f, 0.5f, //
+		-0.5f, -0.5f, 0.5f, //
 		
-	    -0.5f, -0.5f,-0.5f, 0.0f, 1.0f,0.0f,//Back
-		 0.5f, -0.5f,-0.5f, 0.0f, 1.0f,0.0f,
-		 0.5f,  0.5f,-0.5f, 0.0f, 1.0f,0.0f,
-		 0.5f,  0.5f,-0.5f, 0.0f, 1.0f,0.0f,
-	    -0.5f,  0.5f,-0.5f, 0.0f, 1.0f,0.0f,
-	    -0.5f, -0.5f,-0.5f, 0.0f, 1.0f,0.0f,
+	    -0.5f, -0.5f,-0.5f, //Back
+		 0.5f, -0.5f,-0.5f, 
+		 0.5f,  0.5f,-0.5f,
+		 0.5f,  0.5f,-0.5f, 
+	    -0.5f,  0.5f,-0.5f, 
+	    -0.5f, -0.5f,-0.5f,
 		
-		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 0.0f,1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f, 0.0f,1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f, 0.0f,1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f, 0.0f,1.0f,
-		 0.5f,  -0.5f, 0.5f, 0.0f, 0.0f,1.0f,
+		 0.5f, -0.5f,  0.5f,  
+		 0.5f, -0.5f, -0.5f, 
+		 0.5f,  0.5f, -0.5f,  
+		 0.5f,  0.5f, -0.5f,  
+		 0.5f,  0.5f,  0.5f,  
+		 0.5f,  -0.5f, 0.5f,
       
-		-0.5f,  0.5f,  0.5f,  1.0f, 1.0f,0.0f,
-		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,0.0f,
-		-0.5f, -0.5f, -0.5f,  1.0f, 1.0f,0.0f,
-		-0.5f, -0.5f, -0.5f,  1.0f, 1.0f,0.0f,
-		-0.5f, -0.5f,  0.5f,  1.0f, 1.0f,0.0f,
-		-0.5f,  0.5f,  0.5f,  1.0f, 1.0f,0.0f,
+		-0.5f,  0.5f,  0.5f,  
+		-0.5f,  0.5f, -0.5f, 
+		-0.5f, -0.5f, -0.5f,  
+		-0.5f, -0.5f, -0.5f,  
+		-0.5f, -0.5f,  0.5f,  
+		-0.5f,  0.5f,  0.5f,  
 		
-		-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,1.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, 1.0f,1.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, 1.0f,1.0f,
-		-0.5f, -0.5f,  0.5f, 0.0f, 1.0f,1.0f,
-		-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,1.0f,
+		-0.5f, -0.5f, -0.5f, 
+		0.5f, -0.5f, -0.5f,  
+		0.5f, -0.5f,  0.5f, 
+		0.5f, -0.5f,  0.5f,  
+		-0.5f, -0.5f,  0.5f, 
+		-0.5f, -0.5f, -0.5f, 
 		
-		-0.5f,  0.5f, -0.5f, 1.0f, 0.2f,0.5f,
-		0.5f,  0.5f, -0.5f,  1.0f, 0.2f,0.5f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.2f,0.5f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.2f,0.5f,
-		-0.5f,  0.5f,  0.5f, 1.0f, 0.2f,0.5f,
-		-0.5f,  0.5f, -0.5f, 1.0f, 0.2f,0.5f,
+		-0.5f,  0.5f, -0.5f, 
+		0.5f,  0.5f, -0.5f,  
+		0.5f,  0.5f,  0.5f, 
+		0.5f,  0.5f,  0.5f, 
+		-0.5f,  0.5f,  0.5f, 
+		-0.5f,  0.5f, -0.5f, 
 	};
 
 
@@ -153,12 +158,12 @@ int main() {
 	// 4. Despues colocamos las caracteristicas de los vertices
 
 	//Posicion
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid *)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid *)0);
 	glEnableVertexAttribArray(0);
 
-	//Color
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid *)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
+	//Color no lo necesito ahora ya que utilice shaders para los colores
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid *)(3 * sizeof(GLfloat)));
+	//glEnableVertexAttribArray(1);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -195,6 +200,8 @@ int main() {
 		GLint modelLoc = glGetUniformLocation(ourShader.Program, "model");
 		GLint viewLoc = glGetUniformLocation(ourShader.Program, "view");
 		GLint projecLoc = glGetUniformLocation(ourShader.Program, "projection");
+		// Obtener la ubicacion del color para trabajar con shaders
+		GLint colorLoc = glGetUniformLocation(ourShader.Program, "objectColor");
 
 
 		glUniformMatrix4fv(projecLoc, 1, GL_FALSE, glm::value_ptr(projection));
@@ -203,40 +210,112 @@ int main() {
 	
 
 		glBindVertexArray(VAO);
+
+		//color usando shader:
+		glUniform3f(colorLoc, 0.75f, 0.40f, 0.15f);
 	
 	    model = glm::mat4(1.0f);
 		/*Manipulando la matriz: */
-		model = glm::scale(model, glm::vec3(3.40f, 0.14f, 2.4f)); //Superficie mesa (Ancho, grosor, profundidad
+		model = glm::scale(model, glm::vec3(1.0f, 0.5f, 2.0f)); //Cuerpo zorro (Ancho, grosor, profundidad
 		model = glm::translate(model, glm::vec3(0.0f, 0.8f, 0.0f)); //Posicionando la mesa
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		
 
-		/*Inicializando nuevaente la matriz*/
+		/*Pata 1*/
+		glUniform3f(colorLoc, 1.0f, 0.0f, 0.0f);
 		model = glm::mat4(1.0f);
-		model = glm::scale(model, glm::vec3(0.20f, 0.8f, 0.14f)); //Tamaño pata
-		model = glm::translate(model, glm::vec3(3.9f, -0.5f, 2.7f)); //Posicion pata
+		model = glm::scale(model, glm::vec3(0.20f, 0.7f, 0.20f)); //Tamaño pata
+		model = glm::translate(model, glm::vec3(2.0f, -0.28f, 4.5f)); //Posicion pata
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		//pata 2
+		glUniform3f(colorLoc, 0.80f, 0.42f, 0.15f); // Café
 		model = glm::mat4(1.0f);
-		model = glm::scale(model, glm::vec3(0.20f, 0.8f, 0.14f)); //Tamaño pata
-		model = glm::translate(model, glm::vec3(-3.9f, -0.5f, 2.7f)); //Posicion pata
+		model = glm::scale(model, glm::vec3(0.20f, 0.7f, 0.20f)); //Tamaño pata
+		model = glm::translate(model, glm::vec3(-2.0f, -0.28f, 4.5f)); //Posicion pata
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		//Pata 3
+		glUniform3f(colorLoc, 0.80f, 0.42f, 0.15f); // Café
 		model = glm::mat4(1.0f);
-		model = glm::scale(model, glm::vec3(0.20f, 0.8f, 0.14f)); //Tamaño pata
-		model = glm::translate(model, glm::vec3(-3.9f, -0.5f, -2.7f)); //Posición pata
+		model = glm::scale(model, glm::vec3(0.20f, 0.7f, 0.20f)); //Tamaño pata
+		model = glm::translate(model, glm::vec3(-2.0f, -0.28f, -4.5f)); //Posición pata
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		//pata 4
+		glUniform3f(colorLoc, 0.80f, 0.42f, 0.15f); // Café
 		model = glm::mat4(1.0f);
-		model = glm::scale(model, glm::vec3(0.20f, 0.8f, 0.14f)); //Tamaño pata
-		model = glm::translate(model, glm::vec3(3.9f, -0.5f, -2.7f)); //Posicion pata
+		model = glm::scale(model, glm::vec3(0.20f, 0.7f, 0.20f)); //Tamaño pata
+		model = glm::translate(model, glm::vec3(2.0f, -0.28f, -4.5f)); //Posicion pata
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		//cabeza
+		glUniform3f(colorLoc, 0.80f, 0.42f, 0.15f); // Café
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(1.0f, 0.8f, 0.6f)); //Tamaño 
+		model = glm::translate(model, glm::vec3(0.0f, 1.f, 2.0f)); //Posicion
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+		//cachetes
+		glUniform3f(colorLoc, 1.0f, 1.0f, 1.0f); // blanco
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(1.2f, 0.4f, 0.6f)); //
+		model = glm::translate(model, glm::vec3(0.0f, 1.2f, 2.0f)); //
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		//boca blanca
+		glUniform3f(colorLoc, 1.0f, 1.0f, 1.0f); //
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.4f, 0.15f, 0.78f)); //
+		model = glm::translate(model, glm::vec3(0.0f, 2.6f, 2.3f)); //
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		//boca cafe
+		glUniform3f(colorLoc, 0.80f, 0.42f, 0.15f); //
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.4f, 0.15f, 0.78f)); //
+		model = glm::translate(model, glm::vec3(0.0f, 3.6f, 2.3f)); //
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		//nariz
+		glUniform3f(colorLoc, 0.0f, 0.0f, 0.0f); // negro
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.25f, 0.15f, 0.3f)); //
+		model = glm::translate(model, glm::vec3(0.0f, 3.6f, 7.2f)); //
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		//oreja izq
+		glUniform3f(colorLoc, 0.0f, 0.0f, 0.0f); // negro
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.25f, 0.28f, 0.25f)); //
+		model = glm::translate(model, glm::vec3(-1.2f, 4.8f, 5.2f)); //
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+		//oreja der
+		glUniform3f(colorLoc, 0.0f, 0.0f, 0.0f); // negro
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.25f, 0.28f, 0.25f)); //
+		model = glm::translate(model, glm::vec3(1.2f, 4.8f, 5.2f)); //
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		//base pata der
+		glUniform3f(colorLoc, 0.0f, 0.0f, 0.0f); // negro
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.25f, 0.28f, 0.25f)); //
+		model = glm::translate(model, glm::vec3(1.2f, 4.8f, 5.2f)); //
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 				
@@ -277,4 +356,9 @@ int main() {
 		 rot -= 0.4f;
  }
 
-
+ /* Equipo 
+ * presentacion
+ * debe de llevar caratulacon:
+ - numero de quipo
+ - integrantes (numero de cuenta) y correo electronico
+ TODO EL EQUIPO SUBE LA PORTADA */
