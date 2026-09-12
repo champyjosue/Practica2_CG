@@ -220,10 +220,18 @@ int main() {
 		model = glm::translate(model, glm::vec3(0.0f, 0.8f, 0.0f)); //Posicionando la mesa
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
-		
+
+		glUniform3f(colorLoc, 0.75f, 0.40f, 0.15f);
+
+		model = glm::mat4(1.0f);
+		/*Manipulando la matriz: */
+		model = glm::scale(model, glm::vec3(0.6f, 0.1f, 2.0f)); //Cuerpo zorro (Ancho, grosor, profundidad
+		model = glm::translate(model, glm::vec3(0.0f, 7.0f, 0.0f)); //Posicionando la mesa
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		/*Pata 1*/
-		glUniform3f(colorLoc, 1.0f, 0.0f, 0.0f);
+		glUniform3f(colorLoc, 0.80f, 0.42f, 0.15f);
 		model = glm::mat4(1.0f);
 		model = glm::scale(model, glm::vec3(0.20f, 0.7f, 0.20f)); //Tamaño pata
 		model = glm::translate(model, glm::vec3(2.0f, -0.28f, 4.5f)); //Posicion pata
@@ -258,7 +266,7 @@ int main() {
 		glUniform3f(colorLoc, 0.80f, 0.42f, 0.15f); // Café
 		model = glm::mat4(1.0f);
 		model = glm::scale(model, glm::vec3(1.0f, 0.8f, 0.6f)); //Tamaño 
-		model = glm::translate(model, glm::vec3(0.0f, 1.f, 2.0f)); //Posicion
+		model = glm::translate(model, glm::vec3(0.0f, 1.f, 1.98f)); //Posicion
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -290,10 +298,10 @@ int main() {
 		glUniform3f(colorLoc, 0.0f, 0.0f, 0.0f); // negro
 		model = glm::mat4(1.0f);
 		model = glm::scale(model, glm::vec3(0.25f, 0.15f, 0.3f)); //
-		model = glm::translate(model, glm::vec3(0.0f, 3.6f, 7.2f)); //
+		model = glm::translate(model, glm::vec3(0.0f, 3.55f, 7.2f)); //
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
-
+		// OREJAS
 		//oreja izq
 		glUniform3f(colorLoc, 0.0f, 0.0f, 0.0f); // negro
 		model = glm::mat4(1.0f);
@@ -311,13 +319,128 @@ int main() {
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
+		//oreja izq
+		glUniform3f(colorLoc, 1.0f, 1.0f, 1.0f); // blanco
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.1f, 0.2f, 0.25f)); //
+		model = glm::translate(model, glm::vec3(-2.8f, 6.8f, 5.25f)); //
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+		//oreja der
+		glUniform3f(colorLoc, 1.0f, 1.0f, 1.0f); // blanco
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.1f, 0.2f, 0.25f)); //
+		model = glm::translate(model, glm::vec3(2.8f, 6.8f, 5.25f)); //
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
 		//base pata der
 		glUniform3f(colorLoc, 0.0f, 0.0f, 0.0f); // negro
 		model = glm::mat4(1.0f);
 		model = glm::scale(model, glm::vec3(0.25f, 0.28f, 0.25f)); //
-		model = glm::translate(model, glm::vec3(1.2f, 4.8f, 5.2f)); //
+		model = glm::translate(model, glm::vec3(-1.6f, -2.0f, -3.6f)); //-2.0f, -0.28f, -4.5f
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		//base pata izq
+		glUniform3f(colorLoc, 0.0f, 0.0f, 0.0f); // negro
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.25f, 0.28f, 0.25f)); //
+		model = glm::translate(model, glm::vec3(1.6f, -2.0f, -3.6f)); //-2.0f, -0.28f, -4.5f
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		// base patas enfrente
+		//base pata der
+		glUniform3f(colorLoc, 0.0f, 0.0f, 0.0f); // negro
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.23f, 0.28f, 0.29f)); //
+		model = glm::translate(model, glm::vec3(-1.78f, -2.0f, 3.25f)); //-2.0f, -0.28f, -4.5f
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		//base pata izq
+		glUniform3f(colorLoc, 0.0f, 0.0f, 0.0f); // negro
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.23f, 0.28f, 0.29f)); //
+		model = glm::translate(model, glm::vec3(1.78f, -2.0f, 3.25f)); //-2.0f, -0.28f, -4.5f
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		// ojos
+		//ojo izq
+		glUniform3f(colorLoc, 1.0f, 1.0f, 1.1f); // negro
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.25f, 0.28f, 0.25f)); //
+		model = glm::translate(model, glm::vec3(-1.2f, 2.8f, 5.5f)); //
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+		//ojo der
+		glUniform3f(colorLoc, 1.0f, 1.0f, 1.0f); // negro
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.25f, 0.28f, 0.25f)); //
+		model = glm::translate(model, glm::vec3(1.2f, 2.8f, 5.5f)); //
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		/////////////
+		//ojo izq
+		glUniform3f(colorLoc, 0.0f, 0.0f, 0.1f); // negro
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.15f, 0.15f, 0.25f)); //
+		model = glm::translate(model, glm::vec3(-1.6f, 4.8f, 5.6f)); //
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+		//ojo der
+		glUniform3f(colorLoc, 0.0f, 0.0f, 0.0f); // negro
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.15f, 0.15f, 0.25f)); //
+		model = glm::translate(model, glm::vec3(1.6f, 4.8f, 5.6f)); //
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		// =========================
+		// COLA DEL ZORRO
+		// =========================
+
+		// Base de la cola
+		glUniform3f(colorLoc, 0.75f, 0.40f, 0.15f); // naranja/café
+
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.15f));
+		model = glm::translate(model, glm::vec3(0.0f, 1.15f, -1.25f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+		// Parte media de la cola
+		glUniform3f(colorLoc, 0.75f, 0.40f, 0.15f);
+
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 1.02f));
+		model = glm::translate(model, glm::vec3(0.0f, 1.90f, -2.30f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+		// Punta blanca de la cola
+		glUniform3f(colorLoc, 1.0f, 1.0f, 1.0f);
+
+		model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(0.28f, 0.28f, 0.70f));
+		model = glm::translate(model, glm::vec3(0.0f, 2.2f, -4.60f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		
+
+
+
 				
 
 		glBindVertexArray(0);
