@@ -1,6 +1,6 @@
-// Previo 5
+// Previo 6
 // Valdez Hernandez Alan Josue
-// Fecha de entrega: 15 de septiembre del 2026
+// Fecha de entrega: 22 de septiembre del 2026
 // Numero de cuenta: 421122006
 
 #include<iostream>
@@ -45,7 +45,7 @@ int main() {
 
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Previo 5 - Alan Valdez", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Previo 6 - Alan Valdez", nullptr, nullptr);
 
 	int screenWidth, screenHeight;
 
