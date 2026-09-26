@@ -1,6 +1,6 @@
-// Previo 6
+// Practica 6
 // Valdez Hernandez Alan Josue
-// Fecha de entrega: 22 de septiembre del 2026
+// Fecha de entrega: 27 de septiembre del 2026
 // Numero de cuenta: 421122006
 
 
@@ -60,7 +60,7 @@ int main( )
     glfwWindowHint( GLFW_RESIZABLE, GL_FALSE );
     
     // Create a GLFWwindow object that we can use for GLFW's functions
-    GLFWwindow *window = glfwCreateWindow( WIDTH, HEIGHT, "Previo 6 - Alan Valdez", nullptr, nullptr );
+    GLFWwindow *window = glfwCreateWindow( WIDTH, HEIGHT, "Practica  - Alan Valdez", nullptr, nullptr );
     
     if ( nullptr == window )
     {
@@ -101,6 +101,7 @@ int main( )
     
     // Load models
     Model dog((char*)"Models/RedDog.obj");//Cargar ruta y nombre del objeto que se va a cargar 
+    Model chair((char*)"Models/cadeira_newport.obj");
     glm::mat4 projection = glm::perspective( camera.GetZoom( ), ( float )SCREEN_WIDTH/( float )SCREEN_HEIGHT, 0.1f, 100.0f );
     
   
@@ -133,6 +134,24 @@ int main( )
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         dog.Draw(shader); //Dibujando
 
+        
+        // Dibujar silla
+        glm::mat4 chairModel(1);
+        chairModel = glm::translate(chairModel,glm::vec3(-1.0f, -1.0f, -1.0f)  );
+        chairModel = glm::scale(chairModel,glm::vec3(1.0f, 1.0f, 1.0f));
+        // Rotar 90 grados sobre Y
+        chairModel = glm::rotate(
+            chairModel,
+            glm::radians(180.0f),
+            glm::vec3(0.0f, 1.0f, 0.0f)
+        );
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"),1,GL_FALSE,glm::value_ptr(chairModel));
+     
+
+        chair.Draw(shader);
+
+
+        /*
         model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
@@ -142,7 +161,7 @@ int main( )
         model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0, 1.0f));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        dog.Draw(shader); //Dibujando
+        dog.Draw(shader); //Dibujando 
 
 
         model = glm::translate(model, glm::vec3(-1.0f, 2.0f, -4.0f));
@@ -150,7 +169,7 @@ int main( )
         model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 0.0, 1.0f));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         dog.Draw(shader); //Dibujando
-        
+        */
 
         // Swap the buffers
         glfwSwapBuffers( window );
@@ -231,3 +250,8 @@ void MouseCallback( GLFWwindow *window, double xPos, double yPos )
     camera.ProcessMouseMovement( xOffset, yOffset );
 }
 
+/*
+Elegir un escenario para el perrito!
+para ver los modelos adicionales puedo cargar 
+Buscar modelos 
+*/
