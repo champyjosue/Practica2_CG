@@ -28,7 +28,7 @@
 #include "stb_image.h"
 
 // Properties
-const GLuint WIDTH = 800, HEIGHT = 600;
+const GLuint WIDTH = 1000, HEIGHT = 700;
 int SCREEN_WIDTH, SCREEN_HEIGHT;
 
 // Function prototypes
@@ -60,7 +60,7 @@ int main( )
     glfwWindowHint( GLFW_RESIZABLE, GL_FALSE );
     
     // Create a GLFWwindow object that we can use for GLFW's functions
-    GLFWwindow *window = glfwCreateWindow( WIDTH, HEIGHT, "Practica  - Alan Valdez", nullptr, nullptr );
+    GLFWwindow *window = glfwCreateWindow( WIDTH, HEIGHT, "Practica 6 - Alan Valdez", nullptr, nullptr );
     
     if ( nullptr == window )
     {
@@ -102,6 +102,12 @@ int main( )
     // Load models
     Model dog((char*)"Models/RedDog.obj");//Cargar ruta y nombre del objeto que se va a cargar 
     Model chair((char*)"Models/cadeira_newport.obj");
+    Model bosque((char*)"Models/Bosque.obj");
+    Model nube((char*)"Models/Nubes.obj");
+    Model sol((char*)"Models/SunCute.obj");
+    Model flor((char*)"Models/cartoon_flower.obj");
+    Model hongo((char*)"Models/Blue+Mushroom.obj");
+    
     glm::mat4 projection = glm::perspective( camera.GetZoom( ), ( float )SCREEN_WIDTH/( float )SCREEN_HEIGHT, 0.1f, 100.0f );
     
   
@@ -119,7 +125,7 @@ int main( )
         DoMovement();
 
         // Clear the colorbuffer
-        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+        glClearColor(0.53f, 0.81f, 0.92f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader.Use();// uso del shader
@@ -131,25 +137,52 @@ int main( )
 
         // Draw the loaded model
         glm::mat4 model(1);
+        model = glm::translate(model, glm::vec3(0.3f, 0.f, 0.0f));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         dog.Draw(shader); //Dibujando
 
         
         // Dibujar silla
         glm::mat4 chairModel(1);
-        chairModel = glm::translate(chairModel,glm::vec3(-1.0f, -1.0f, -1.0f)  );
+        chairModel = glm::translate(chairModel,glm::vec3(1.4f, -2.6f, -0.50f)  );
         chairModel = glm::scale(chairModel,glm::vec3(1.0f, 1.0f, 1.0f));
         // Rotar 90 grados sobre Y
-        chairModel = glm::rotate(
-            chairModel,
-            glm::radians(180.0f),
-            glm::vec3(0.0f, 1.0f, 0.0f)
-        );
+        chairModel = glm::rotate(chairModel,glm::radians(180.0f),glm::vec3(0.0f, 1.0f, 0.0f)        );
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"),1,GL_FALSE,glm::value_ptr(chairModel));
-     
-
         chair.Draw(shader);
 
+        glm::mat4 modelBosque(1);
+        modelBosque = glm::translate(modelBosque, glm::vec3(-0.5f, -1.33f, 0.0f));
+        modelBosque = glm::rotate(modelBosque,glm::radians(180.0f),glm::vec3(0.0f, 1.0f, 0.0f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(modelBosque));
+        bosque.Draw(shader); //Dibujando
+
+        glm::mat4 modelNube(1);
+        modelNube = glm::translate(modelNube, glm::vec3(0.0f, 4.0f, 0.0f));
+        modelNube = glm::rotate(modelNube,glm::radians(-20.0f),glm::vec3(0.0f, 0.0f, 1.0f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(modelNube));
+        nube.Draw(shader); //Dibujando
+
+        glm::mat4 modelSol(1);
+        modelSol = glm::translate(modelSol, glm::vec3(0.0f, 4.0f, 0.0f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(modelSol));
+        sol.Draw(shader); //Dibujando
+
+        glm::mat4 modelFlor(1);
+        modelFlor = glm::translate(modelFlor, glm::vec3(-1.5f, -1.0f, 0.98f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(modelFlor));
+        flor.Draw(shader); //Dibujando
+
+        glm::mat4 modelFlor2(1);
+        modelFlor2 = glm::translate(modelFlor2, glm::vec3(1.5f, -1.0f, 0.98f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(modelFlor2));
+        flor.Draw(shader); //Dibujando
+
+        glm::mat4 modelHongo(1);
+        modelHongo = glm::translate(modelHongo, glm::vec3(0.2f, -0.89f, 1.28f));
+        modelHongo = glm::scale(modelHongo, glm::vec3(0.15f, 0.15f, 0.15f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(modelHongo));
+        hongo.Draw(shader); //Dibujando
 
         /*
         model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
