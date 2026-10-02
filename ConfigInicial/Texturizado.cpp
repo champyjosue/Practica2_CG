@@ -104,18 +104,66 @@ int main()
 	GLfloat vertices[] =
 	{
 		// Positions            // Colors              // Texture Coords (Coordenadas) 
-		-0.5f, -0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.0f,0.0f,
-		0.5f, -0.5f, 0.0f,	   1.0f, 1.0f,1.0f,		1.0f,0.0f,
-		0.5f,  0.5f, 0.0f,     1.0f, 1.0f,1.0f,	    1.0f,1.0f,
-		-0.5f,  0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.0f,1.0f,
+		-0.5f, -0.5f, 0.5f,    1.0f, 1.0f,1.0f,		0.12f,0.28f,
+		0.5f, -0.5f, 0.5f,	   1.0f, 1.0f,1.0f,		0.33f,0.28f,
+		0.5f,  0.5f, 0.5f,     1.0f, 1.0f,1.0f,	    0.33f,0.49f,
+		-0.5f,  0.5f, 0.5f,    1.0f, 1.0f,1.0f,		0.12f,0.49f,
 
-		
+		// ==================== ATRÁS ====================
+		 0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.38f, 0.28f,
+		-0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 0.28f,
+		-0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 1.49f,
+		 0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.38f, 1.49f,
+
+	 // ==================== IZQUIERDA ====================
+	 -0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.0f, 0.0f,
+	 -0.5f, -0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 0.0f,
+	 -0.5f,  0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 1.0f,
+	 -0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.0f, 1.0f,
+
+	 // ==================== DERECHA ====================
+	  0.5f, -0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      0.0f, 0.0f,
+	  0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 0.0f,
+	  0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 1.0f,
+	  0.5f,  0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      0.0f, 1.0f,
+
+	  // ==================== ARRIBA ====================
+	  -0.5f,  0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      0.0f, 0.0f,
+	   0.5f,  0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 0.0f,
+	   0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 1.0f,
+	  -0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.0f, 1.0f,
+
+	  // ==================== ABAJO ====================
+	  -0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.0f, 0.0f,
+	   0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 0.0f,
+	   0.5f, -0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 1.0f,
+	  -0.5f, -0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      0.0f, 1.0f
 	};
 
 	GLuint indices[] =//Indices del plano
 	{  // Note that we start from 0!
-		0,1,3,
-		1,2,3
+		0,1,2,
+		2,3,0,
+
+		// Atrás
+		4, 5, 6,
+		6, 7, 4,
+
+		// Izquierda
+		8, 9, 10,
+		10, 11, 8,
+
+		// Derecha
+		12, 13, 14,
+		14, 15, 12,
+
+		// Arriba
+		16, 17, 18,
+		18, 19, 16,
+
+		// Abajo
+		20, 21, 22,
+		22, 23, 20
 	
 	};
 
@@ -156,13 +204,13 @@ int main()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 	// Diffuse map
-	image = stbi_load("images/Pixel-Art-Game-Assets_02.png", &textureWidth, &textureHeight, &nrChannels,0);
+	image = stbi_load("images/18973629.jpg", &textureWidth, &textureHeight, &nrChannels,0);
 	glBindTexture(GL_TEXTURE_2D, texture1);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	if (image)
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else
@@ -211,7 +259,7 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		// Draw the light object (using light's vertex attributes)
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 
 		// Swap the screen buffers
