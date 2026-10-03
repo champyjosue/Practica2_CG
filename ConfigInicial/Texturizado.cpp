@@ -1,6 +1,6 @@
-// Previo 7
+// Practica 7
 // Valdez Hernandez Alan Josue
-// Fecha de entrega: 29 de septiembre del 2026
+// Fecha de entrega: 04 de octubre del 2026
 // Numero de cuenta: 421122006
 #include <iostream>
 #include <cmath>
@@ -60,7 +60,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Previo 7 - Alan Valdez", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 7 - Alan Valdez", nullptr, nullptr);
 
 	if (nullptr == window)
 	{
@@ -110,34 +110,34 @@ int main()
 		-0.5f,  0.5f, 0.5f,    1.0f, 1.0f,1.0f,		0.12f,0.49f,
 
 		// ==================== ATRÁS ====================
-		 0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.38f, 0.28f,
-		-0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 0.28f,
-		-0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 1.49f,
-		 0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.38f, 1.49f,
+		 0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.12f,0.55f,
+		-0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.33f,0.55f,
+		-0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.33f,0.76f,
+		 0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.12f,0.76f,
 
 	 // ==================== IZQUIERDA ====================
-	 -0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.0f, 0.0f,
-	 -0.5f, -0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 0.0f,
-	 -0.5f,  0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 1.0f,
-	 -0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.0f, 1.0f,
+	 -0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.65f, 0.28f,
+	 -0.5f, -0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      0.86f, 0.28f,
+	 -0.5f,  0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      0.86f, 0.49f,
+	 -0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.65f, 0.49f,
 
 	 // ==================== DERECHA ====================
-	  0.5f, -0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      0.0f, 0.0f,
-	  0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 0.0f,
-	  0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 1.0f,
-	  0.5f,  0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      0.0f, 1.0f,
+	  0.5f, -0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      0.39f, 0.28f,
+	  0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.61f, 0.28f,
+	  0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.61f, 0.49f,
+	  0.5f,  0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      0.39f, 0.49f,
 
 	  // ==================== ARRIBA ====================
-	  -0.5f,  0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      0.0f, 0.0f,
-	   0.5f,  0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 0.0f,
-	   0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 1.0f,
-	  -0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.0f, 1.0f,
+	  -0.5f,  0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      0.39f,0.55f,
+	   0.5f,  0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      0.61f,0.55f,
+	   0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.61f,0.76f,
+	  -0.5f,  0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.39f,0.76f,
 
 	  // ==================== ABAJO ====================
-	  -0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.0f, 0.0f,
-	   0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 0.0f,
-	   0.5f, -0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      1.0f, 1.0f,
-	  -0.5f, -0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      0.0f, 1.0f
+	  -0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.65f, 0.55f,
+	   0.5f, -0.5f, -0.5f,     1.0f, 1.0f, 1.0f,      0.86f, 0.55f,
+	   0.5f, -0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      0.86f, 0.76f,
+	  -0.5f, -0.5f,  0.5f,     1.0f, 1.0f, 1.0f,      0.65f, 0.76f
 	};
 
 	GLuint indices[] =//Indices del plano
@@ -208,7 +208,7 @@ int main()
 	glBindTexture(GL_TEXTURE_2D, texture1);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 	glGenerateMipmap(GL_TEXTURE_2D);
-	if (image)
+	if (image) 
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 		glGenerateMipmap(GL_TEXTURE_2D);
