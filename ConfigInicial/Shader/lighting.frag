@@ -1,4 +1,5 @@
 #version 330 core
+
 struct Material
 {
     vec3 ambient;
@@ -26,12 +27,14 @@ uniform vec3 viewPos;
 uniform Material material;
 uniform Light light;
 
-uniform sampler2D texture_diffusse;
+uniform sampler2D texture_diffuse1;
+uniform vec3 materialColor;
+uniform int hasTexture;
 
 void main()
 {
     // Ambient
-    vec3 ambient = light.ambient *material.diffuse;
+    vec3 ambient = light.ambient * material.diffuse;
     
     // Diffuse
     vec3 norm = normalize(Normal);
@@ -45,6 +48,21 @@ void main()
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     vec3 specular = light.specular * (spec * material.specular);
     
+    // Iluminación
     vec3 result = ambient + diffuse + specular;
-    color = vec4(result, 1.0f)*texture(texture_diffusse, TexCoords);
+
+    // Textura o color del material
+    if (hasTexture == 1)
+    {
+        vec4 texColor = texture(texture_diffuse1, TexCoords);
+
+        if (texColor.a < 0.1)
+            discard;
+
+        color = vec4(result, 1.0) * texColor;
+    }
+    else
+    {
+        color = vec4(result * materialColor, 1.0);
+    }
 }

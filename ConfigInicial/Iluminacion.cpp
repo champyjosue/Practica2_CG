@@ -36,7 +36,7 @@ void DoMovement();
 
 
 // Camera
-Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
+Camera camera(glm::vec3(0.0f, 0.0f, 8.0f));
 bool keys[1024];
 GLfloat lastX = 400, lastY = 300;
 bool firstMouse = true;
@@ -110,6 +110,14 @@ int main()
     Model tumba((char*)"Models/Tumba.obj");
     Model tumba2((char*)"Models/Tumba2.obj");
     Model tumba3((char*)"Models/Tumba3.obj");
+
+    // modelos p8:
+    Model chair((char*)"Models/cadeira_newport.obj");
+    Model bosque((char*)"Models/Bosque.obj");
+    Model nube((char*)"Models/Nubes.obj");
+    Model sol((char*)"Models/SunCute.obj");
+    Model flor((char*)"Models/cartoon_flower.obj");
+    Model hongo((char*)"Models/Blue+Mushroom.obj");
 
     glm::mat4 projection = glm::perspective(camera.GetZoom(), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
 
@@ -213,7 +221,7 @@ int main()
         DoMovement();
 
         // Clear the colorbuffer
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 0.1f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Nuevo contenido practica 8
@@ -246,7 +254,7 @@ int main()
 
         // Draw the loaded model
         glm::mat4 model(1);
-        model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(VAO);
        
@@ -261,7 +269,7 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(modelTumba));
         glBindVertexArray(VAO);
 
-        tumba.Draw(lightingShader);
+        //tumba.Draw(lightingShader);
 
 
         glm::mat4 modelTumba2(1);
@@ -275,7 +283,7 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(modelTumba2));
         glBindVertexArray(VAO);
 
-        tumba2.Draw(lightingShader);
+        //tumba2.Draw(lightingShader);
 
         glm::mat4 modelTumba3(1);
         modelTumba3 = glm::scale(modelTumba3, glm::vec3(2.0f, 2.0f, 2.0f));
@@ -288,7 +296,202 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(modelTumba3));
         glBindVertexArray(VAO);
 
-        tumba3.Draw(lightingShader);
+        //tumba3.Draw(lightingShader);
+
+
+        // ----------------------------------------------------
+// SILLA
+// ----------------------------------------------------
+        glm::mat4 chairModel(1.0f);
+
+        chairModel = glm::translate(
+            chairModel,
+            glm::vec3(1.4f, -2.0f, 0.0f)
+        );
+
+        chairModel = glm::scale(
+            chairModel,
+            glm::vec3(1.0f, 1.0f, 1.0f)
+        );
+
+        chairModel = glm::rotate(
+            chairModel,
+            glm::radians(180.0f),
+            glm::vec3(0.0f, 1.0f, 0.0f)
+        );
+
+        glUniformMatrix4fv(
+            glGetUniformLocation(lightingShader.Program, "model"),
+            1,
+            GL_FALSE,
+            glm::value_ptr(chairModel)
+        );
+
+        chair.Draw(lightingShader);
+
+
+        // ----------------------------------------------------
+        // BOSQUE
+        // ----------------------------------------------------
+        glm::mat4 modelBosque(1.0f);
+
+        modelBosque = glm::translate(
+            modelBosque,
+            glm::vec3(-1.5f, -1.5f, -1.0f)
+        );
+
+        modelBosque = glm::scale(
+            modelBosque,
+            glm::vec3(1.5f, 1.5f, 1.5f)
+        );
+
+        modelBosque = glm::rotate(
+            modelBosque,
+            glm::radians(180.0f),
+            glm::vec3(0.0f, 1.0f, 0.0f)
+        );
+
+        glUniformMatrix4fv(
+            glGetUniformLocation(lightingShader.Program, "model"),
+            1,
+            GL_FALSE,
+            glm::value_ptr(modelBosque)
+        );
+
+        bosque.Draw(lightingShader);
+
+
+        // ----------------------------------------------------
+        // NUBE
+        // ----------------------------------------------------
+        glm::mat4 modelNube(1.0f);
+
+        modelNube = glm::translate(
+            modelNube,
+            glm::vec3(0.0f, 2.5f, -2.0f)
+        );
+
+        modelNube = glm::scale(
+            modelNube,
+            glm::vec3(1.5f, 1.5f, 1.5f)
+        );
+
+        modelNube = glm::rotate(
+            modelNube,
+            glm::radians(-20.0f),
+            glm::vec3(0.0f, 0.0f, 1.0f)
+        );
+
+        glUniformMatrix4fv(
+            glGetUniformLocation(lightingShader.Program, "model"),
+            1,
+            GL_FALSE,
+            glm::value_ptr(modelNube)
+        );
+
+        nube.Draw(lightingShader);
+
+
+        // ----------------------------------------------------
+        // SOL
+        // ----------------------------------------------------
+        glm::mat4 modelSol(1.0f);
+
+        modelSol = glm::translate(
+            modelSol,
+            glm::vec3(0.0f, 2.5f, -2.0f)
+        );
+
+        modelSol = glm::scale(
+            modelSol,
+            glm::vec3(1.0f, 1.0f, 1.0f)
+        );
+
+        glUniformMatrix4fv(
+            glGetUniformLocation(lightingShader.Program, "model"),
+            1,
+            GL_FALSE,
+            glm::value_ptr(modelSol)
+        );
+
+        sol.Draw(lightingShader);
+
+
+        // ----------------------------------------------------
+        // FLOR IZQUIERDA
+        // ----------------------------------------------------
+        glm::mat4 modelFlor(1.0f);
+
+        modelFlor = glm::translate(
+            modelFlor,
+            glm::vec3(-1.5f, -1.0f, -1.0f)
+        );
+
+        modelFlor = glm::scale(
+            modelFlor,
+            glm::vec3(0.7f, 0.7f, 0.7f)
+        );
+
+        glUniformMatrix4fv(
+            glGetUniformLocation(lightingShader.Program, "model"),
+            1,
+            GL_FALSE,
+            glm::value_ptr(modelFlor)
+        );
+
+        flor.Draw(lightingShader);
+
+
+        // ----------------------------------------------------
+        // FLOR DERECHA
+        // ----------------------------------------------------
+        glm::mat4 modelFlor2(1.0f);
+
+        modelFlor2 = glm::translate(
+            modelFlor2,
+            glm::vec3(1.5f, -1.0f, -1.0f)
+        );
+
+        modelFlor2 = glm::scale(
+            modelFlor2,
+            glm::vec3(0.7f, 0.7f, 0.7f)
+        );
+
+        glUniformMatrix4fv(
+            glGetUniformLocation(lightingShader.Program, "model"),
+            1,
+            GL_FALSE,
+            glm::value_ptr(modelFlor2)
+        );
+
+        flor.Draw(lightingShader);
+
+
+        // ----------------------------------------------------
+        // HONGO
+        // ----------------------------------------------------
+        glm::mat4 modelHongo(1.0f);
+
+        modelHongo = glm::translate(
+            modelHongo,
+            glm::vec3(0.2f, -0.8f, -1.0f)
+        );
+
+        modelHongo = glm::scale(
+            modelHongo,
+            glm::vec3(0.15f, 0.15f, 0.15f)
+        );
+
+        glUniformMatrix4fv(
+            glGetUniformLocation(lightingShader.Program, "model"),
+            1,
+            GL_FALSE,
+            glm::value_ptr(modelHongo)
+        );
+
+        hongo.Draw(lightingShader);
+
+
 
 
         glBindVertexArray(0);
@@ -405,3 +608,7 @@ void MouseCallback(GLFWwindow* window, double xPos, double yPos)
 }
 
 
+/*Aplicar iluminacion 
+2 fuentes de luz y 
+
+*/
