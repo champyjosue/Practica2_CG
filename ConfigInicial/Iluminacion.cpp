@@ -1,6 +1,6 @@
-// Previo 8
+// Practica 8
 // Valdez Hernandez Alan Josue
-// Fecha de entrega: 6 de octubre del 2026
+// Fecha de entrega: 11 de octubre del 2026
 // Numero de cuenta: 421122006
 // 
 // Std. Includes
@@ -26,7 +26,7 @@
 #include "SOIL2/SOIL2.h"
 #include "stb_image.h"
 // Properties
-const GLuint WIDTH = 800, HEIGHT = 600;
+const GLuint WIDTH =1000, HEIGHT = 700;
 int SCREEN_WIDTH, SCREEN_HEIGHT;
 
 // Function prototypes
@@ -49,6 +49,10 @@ GLfloat deltaTime = 0.0f;
 GLfloat lastFrame = 0.0f;
 float rot = 0.0f;
 bool activanim = false;
+// Para el SOL como Fuente de Luz
+glm::vec3 sunPos(0.0f, 2.5f, -2.0f);
+float sunAngle = 0.0f;
+float sunOrbitRadius = 10.0f;
 
 int main()
 {
@@ -62,7 +66,7 @@ int main()
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     // Create a GLFWwindow object that we can use for GLFW's functions
-    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Previo 8 - Alan Valdez", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 8 - Alan Valdez", nullptr, nullptr);
 
     if (nullptr == window)
     {
@@ -118,6 +122,7 @@ int main()
     Model sol((char*)"Models/SunCute.obj");
     Model flor((char*)"Models/cartoon_flower.obj");
     Model hongo((char*)"Models/Blue+Mushroom.obj");
+    Model luna((char*)"Models/Luna.obj");
 
     glm::mat4 projection = glm::perspective(camera.GetZoom(), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
 
@@ -224,19 +229,92 @@ int main()
         glClearColor(0.0f, 0.0f, 0.0f, 0.1f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        // Para el sol
+        sunAngle += 0.0009f; //Velocidad de rotación
+        sunPos.x = cos(sunAngle) * sunOrbitRadius;
+        sunPos.y = 2.0f + sin(sunAngle) * sunOrbitRadius;
+        sunPos.z = -2.0f;
+
+        // Para la luna
+        glm::vec3 moonPos;
+
+        moonPos.x = cos(sunAngle + glm::radians(180.0f)) * sunOrbitRadius;
+        moonPos.y = 2.0f + sin(sunAngle + glm::radians(180.0f)) * sunOrbitRadius;
+        moonPos.z = -2.0f;
+
+        // Activar la luz que esta en la mitad superior de la orbita
+        bool sunEnabled = sunPos.y >= 2.0f;
+        bool moonEnabled = !sunEnabled;
+
         // Nuevo contenido practica 8
         lightingShader.Use();
+        glUniform1i(
+            glGetUniformLocation(lightingShader.Program, "sunEnabled"),
+            sunEnabled ? 1 : 0
+        );
+
+        glUniform1i(
+            glGetUniformLocation(lightingShader.Program, "moonEnabled"),
+            moonEnabled ? 1 : 0
+        );
         GLint lightPosLoc = glGetUniformLocation(lightingShader.Program, "light.position");
         GLint viewPosLoc = glGetUniformLocation(lightingShader.Program, "viewPos");
-        glUniform3f(lightPosLoc, lightPos.x + movelightPos, lightPos.y + movelightPos, lightPos.z + movelightPos);
+
+        // LUZ DEL SOL
+
+        glUniform3f(
+            glGetUniformLocation(lightingShader.Program, "sun.position"),
+            sunPos.x,
+            sunPos.y,
+            sunPos.z
+        );
+
+        glUniform3f(
+            glGetUniformLocation(lightingShader.Program, "sun.ambient"),
+            0.30f, 0.30f, 0.30f
+        );
+
+        glUniform3f(
+            glGetUniformLocation(lightingShader.Program, "sun.diffuse"),
+            1.00f, 0.90f, 0.70f
+        );
+
+        glUniform3f(
+            glGetUniformLocation(lightingShader.Program, "sun.specular"),
+            1.00f, 1.00f, 1.00f
+        );
+
+
+        // LUZ DE LA LUNA
+
+        glUniform3f(
+            glGetUniformLocation(lightingShader.Program, "moon.position"),
+            moonPos.x,
+            moonPos.y,
+            moonPos.z
+        );
+
+        glUniform3f(
+            glGetUniformLocation(lightingShader.Program, "moon.ambient"),
+            0.03f, 0.04f, 0.08f
+        );
+
+        glUniform3f(
+            glGetUniformLocation(lightingShader.Program, "moon.diffuse"),
+            0.15f, 0.20f, 0.40f
+        );
+
+        glUniform3f(
+            glGetUniformLocation(lightingShader.Program, "moon.specular"),
+            0.20f, 0.30f, 0.50f
+        );
+
         glUniform3f(viewPosLoc, camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
 
 
         // Set lights properties
         // Definiendo propiedades de la luz
-        glUniform3f(glGetUniformLocation(lightingShader.Program, "light.ambient"), 0.3f, 0.3f, 0.3f);
-        glUniform3f(glGetUniformLocation(lightingShader.Program, "light.diffuse"), 1.0f, 1.0f, 1.0f);
-        glUniform3f(glGetUniformLocation(lightingShader.Program, "light.specular"), 1.0f, 1.0f, 1.0f);
+        
 
 
         glm::mat4 view = camera.GetViewMatrix();
@@ -299,14 +377,12 @@ int main()
         //tumba3.Draw(lightingShader);
 
 
-        // ----------------------------------------------------
-// SILLA
-// ----------------------------------------------------
+        // SILLA
         glm::mat4 chairModel(1.0f);
 
         chairModel = glm::translate(
             chairModel,
-            glm::vec3(1.4f, -2.0f, 0.0f)
+            glm::vec3(1.3f, -2.6f, -0.3f)
         );
 
         chairModel = glm::scale(
@@ -329,10 +405,7 @@ int main()
 
         chair.Draw(lightingShader);
 
-
-        // ----------------------------------------------------
         // BOSQUE
-        // ----------------------------------------------------
         glm::mat4 modelBosque(1.0f);
 
         modelBosque = glm::translate(
@@ -361,14 +434,12 @@ int main()
         bosque.Draw(lightingShader);
 
 
-        // ----------------------------------------------------
         // NUBE
-        // ----------------------------------------------------
         glm::mat4 modelNube(1.0f);
 
         modelNube = glm::translate(
             modelNube,
-            glm::vec3(0.0f, 2.5f, -2.0f)
+            glm::vec3(0.0f, 4.2f, -2.0f)
         );
 
         modelNube = glm::scale(
@@ -392,18 +463,22 @@ int main()
         nube.Draw(lightingShader);
 
 
-        // ----------------------------------------------------
         // SOL
-        // ----------------------------------------------------
         glm::mat4 modelSol(1.0f);
+        modelSol = glm::translate(modelSol,sunPos);
+        modelSol = glm::scale(modelSol,glm::vec3(1.0f, 1.0f, 1.0f));
+        glUniformMatrix4fv(
+            glGetUniformLocation(lightingShader.Program, "model"),
+            1, GL_FALSE, glm::value_ptr(modelSol));
+        sol.Draw(lightingShader);
 
-        modelSol = glm::translate(
-            modelSol,
-            glm::vec3(0.0f, 2.5f, -2.0f)
-        );
+        // LUNA
+        glm::mat4 modelLuna(1.0f);
 
-        modelSol = glm::scale(
-            modelSol,
+        modelLuna = glm::translate(modelLuna, moonPos);
+
+        modelLuna = glm::scale(
+            modelLuna,
             glm::vec3(1.0f, 1.0f, 1.0f)
         );
 
@@ -411,15 +486,12 @@ int main()
             glGetUniformLocation(lightingShader.Program, "model"),
             1,
             GL_FALSE,
-            glm::value_ptr(modelSol)
+            glm::value_ptr(modelLuna)
         );
 
-        sol.Draw(lightingShader);
+        luna.Draw(lightingShader);
 
-
-        // ----------------------------------------------------
         // FLOR IZQUIERDA
-        // ----------------------------------------------------
         glm::mat4 modelFlor(1.0f);
 
         modelFlor = glm::translate(
@@ -441,10 +513,7 @@ int main()
 
         flor.Draw(lightingShader);
 
-
-        // ----------------------------------------------------
         // FLOR DERECHA
-        // ----------------------------------------------------
         glm::mat4 modelFlor2(1.0f);
 
         modelFlor2 = glm::translate(
@@ -467,9 +536,7 @@ int main()
         flor.Draw(lightingShader);
 
 
-        // ----------------------------------------------------
         // HONGO
-        // ----------------------------------------------------
         glm::mat4 modelHongo(1.0f);
 
         modelHongo = glm::translate(
@@ -499,7 +566,7 @@ int main()
 
 
 
-        lampshader.Use();
+        /*lampshader.Use();
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
         model = glm::mat4(1.0f);
@@ -508,7 +575,7 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
-        glBindVertexArray(0);
+        glBindVertexArray(0);*/
 
         // Swap the buffers
         glfwSwapBuffers(window);

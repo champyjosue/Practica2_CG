@@ -1,0 +1,4 @@
+newmtl LunaMaterial
+Kd 1.0 1.0 1.0
+Ks 0.2 0.2 0.2
+map_Kd Luna_albedo.jpg
