@@ -3,6 +3,7 @@
 // Fecha de entrega: 13 de octubre del 2026
 // Numero de cuenta: 421122006
 
+
 #include <iostream>
 #include <cmath>
 
@@ -161,6 +162,7 @@ int main()
 	
 	Model Dog((char*)"Models/ball.obj");
 	Model Piso((char*)"Models/piso.obj");
+	Model TumbaTransparente((char*)"Models/TumbaTransparente.obj");
 
 
 
@@ -324,6 +326,20 @@ int main()
 		glDisable(GL_BLEND);  //Desactiva el canal alfa ya que consume recursos 
 		glBindVertexArray(0);
 	
+		// Modelo Tumba transparente ------------------------------
+		// Crear la matriz del modelo
+		glm::mat4 modelT = glm::mat4(1.0f);
+		modelT = glm::translate(modelT, glm::vec3(-0.8f, -0.5f, 0.0f));
+		modelT = glm::rotate(modelT,glm::radians(180.0f),glm::vec3(0.0f, 1.0f, 0.0f));
+		modelT = glm::scale(modelT, glm::vec3(0.5f, 0.5f, 0.5f));
+		// Activar transparencia
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"),1,GL_FALSE,glm::value_ptr(modelT));
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"),1);
+		TumbaTransparente.Draw(lightingShader);
+		glDisable(GL_BLEND);
+		glBindVertexArray(0);
 
 		// Also draw the lamp object, again binding the appropriate shader
 		lampShader.Use();
