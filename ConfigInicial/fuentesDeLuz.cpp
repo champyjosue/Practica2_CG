@@ -1,6 +1,6 @@
-// Previo 8
+// Practica 9
 // Valdez Hernandez Alan Josue
-// Fecha de entrega: 13 de octubre del 2026
+// Fecha de entrega: 18 de octubre del 2026
 // Numero de cuenta: 421122006
 
 
@@ -36,7 +36,7 @@ void MouseCallback(GLFWwindow *window, double xPos, double yPos);
 void DoMovement();
 
 // Window dimensions
-const GLuint WIDTH = 800, HEIGHT = 600;
+const GLuint WIDTH = 950, HEIGHT = 700;
 int SCREEN_WIDTH, SCREEN_HEIGHT;
 
 // Camera
@@ -122,7 +122,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Previo 8 - Alan Valdez", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 9 - Alan Valdez", nullptr, nullptr);
 
 	if (nullptr == window)
 	{
@@ -163,6 +163,11 @@ int main()
 	Model Dog((char*)"Models/ball.obj");
 	Model Piso((char*)"Models/piso.obj");
 	Model TumbaTransparente((char*)"Models/TumbaTransparente.obj");
+	Model bosque((char*)"Models/Bosque.obj");
+	Model nube((char*)"Models/Nubes.obj");
+	Model sol((char*)"Models/SunCute.obj");
+	Model flor((char*)"Models/cartoon_flower.obj");
+	Model hongo((char*)"Models/Blue+Mushroom.obj");
 
 
 
@@ -321,7 +326,7 @@ int main()
 		glEnable(GL_BLEND);//Avtiva la funcionalidad para trabajar el canal alfa
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);// 1 para activar la transparencia
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);// 1 para activar la transparencia
 	    Dog.Draw(lightingShader);
 		glDisable(GL_BLEND);  //Desactiva el canal alfa ya que consume recursos 
 		glBindVertexArray(0);
@@ -340,6 +345,40 @@ int main()
 		TumbaTransparente.Draw(lightingShader);
 		glDisable(GL_BLEND);
 		glBindVertexArray(0);
+
+		//Modelos del bosque
+		glm::mat4 modelBosque(1);
+		modelBosque = glm::translate(modelBosque, glm::vec3(-0.5f, -1.33f, 0.0f));
+		modelBosque = glm::rotate(modelBosque, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelBosque));
+		bosque.Draw(lightingShader);
+
+		glm::mat4 modelNube(1);
+		modelNube = glm::translate(modelNube, glm::vec3(0.0f, 4.0f, 0.0f));
+		modelNube = glm::rotate(modelNube, glm::radians(-20.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelNube));
+		nube.Draw(lightingShader);
+
+		glm::mat4 modelSol(1);
+		modelSol = glm::translate(modelSol, glm::vec3(0.0f, 4.0f, 0.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelSol));
+		sol.Draw(lightingShader);
+
+		glm::mat4 modelFlor(1);
+		modelFlor = glm::translate(modelFlor, glm::vec3(-1.5f, -1.0f, 0.98f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelFlor));
+		flor.Draw(lightingShader);
+
+		glm::mat4 modelFlor2(1);
+		modelFlor2 = glm::translate(modelFlor2, glm::vec3(1.5f, -1.0f, 0.98f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelFlor2));
+		flor.Draw(lightingShader);
+
+		glm::mat4 modelHongo(1);
+		modelHongo = glm::translate(modelHongo, glm::vec3(0.2f, -0.89f, 1.28f));
+		modelHongo = glm::scale(modelHongo, glm::vec3(0.15f, 0.15f, 0.15f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelHongo));
+		hongo.Draw(lightingShader);
 
 		// Also draw the lamp object, again binding the appropriate shader
 		lampShader.Use();
@@ -494,3 +533,6 @@ void MouseCallback(GLFWwindow *window, double xPos, double yPos)
 
 	camera.ProcessMouseMovement(xOffset, yOffset);
 }
+/*Integrar 5 fuentes de luz a nuestro escenario: direccion, puntual y de reflexion
+
+Miercoles 11 de noviembre entrega de proyecto*/
