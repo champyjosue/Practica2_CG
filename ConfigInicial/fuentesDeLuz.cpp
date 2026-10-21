@@ -183,7 +183,7 @@ int main()
 	Shader lightingShader("Shader/lighting.vs", "Shader/lighting.frag");
 	Shader lampShader("Shader/lamp.vs", "Shader/lamp.frag");
 	
-	Model Dog((char*)"Models/ball.obj");
+	Model Dog((char*)"Models/RedDog.obj");
 	Model Piso((char*)"Models/piso.obj");
 	Model TumbaTransparente((char*)"Models/TumbaTransparente.obj");
 	Model bosque((char*)"Models/Bosque.obj");
@@ -612,7 +612,7 @@ void MouseCallback(GLFWwindow *window, double xPos, double yPos)
 {
 	if (firstMouse)
 	{
-		lastX = xPos;
+		lastX = xPos;//
 		lastY = yPos;
 		firstMouse = false;
 	}
