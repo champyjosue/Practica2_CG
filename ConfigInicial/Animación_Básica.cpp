@@ -1,6 +1,6 @@
-// Previo 10
+// Practica 10
 // Valdez Hernandez Alan Josue
-// Fecha de entrega: 20 de octubre del 2026
+// Fecha de entrega: 25 de octubre del 2026
 // Numero de cuenta: 421122006
 #include <iostream>
 #include <cmath>
@@ -112,8 +112,19 @@ bool AnimBall = false;// Activa o desactiva la animacion
 GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
 GLfloat lastFrame = 0.0f;  	// Time of last frame
 
-glm::vec3 ballPos(0.0f, 0.0f, 0.0f);
-float direccion = 1.0f;
+float ballRadius = 2.5f;   // Mismo radio que el perrito
+float ballAngle = 0.0f;    // Ángulo en sentido contrario
+float ballY = 2.2f;
+
+// Variables para animacion del perrito
+float dogAngle = 0.0f; //Angulo trayectoria circular
+float dogRadius = 2.5f; // Radio de ricunfernecia
+float dogJump = 0.0f;//Atura del salto
+float dogPitch = 0.0f; // Inclinación adelante/atrás (impulso y coletazo)
+float dogRoll = 0.0f;// Inclinación lateral del cuerpo
+
+float animSpeed = 0.0015f;     // Velocidad general (menor valor = más lento y fluido)
+int numSaltos = 2;
 
 int main()
 {
@@ -127,7 +138,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Previo 10 - Alan Valdez", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 10 - Alan Valdez", nullptr, nullptr);
 
 	if (nullptr == window)
 	{
@@ -287,21 +298,38 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Piso.Draw(lightingShader);
 
-		model = glm::mat4(1);
+		model = glm::mat4(1.0f);
+		float dogX = dogRadius * std::cos(dogAngle);
+		float dogZ = dogRadius * std::sin(dogAngle);
+		model = glm::translate(model, glm::vec3(dogX, dogJump, dogZ));
+
+		// 1. Orientación hacia el frente en la curva circular
+		model = glm::rotate(model, -dogAngle - glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+		// 2. Inclinación delantera/trasera (impulso y coletazo hacia arriba)
+		model = glm::rotate(model, glm::radians(dogPitch), glm::vec3(1.0f, 0.0f, 0.0f));
+
+		// 3. Inclinación lateral (giro de cadera en el aire)
+		model = glm::rotate(model, glm::radians(dogRoll), glm::vec3(0.0f, 0.0f, 1.0f));
+
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
 		Dog.Draw(lightingShader);
 
-		model = glm::mat4(1);
-		glEnable(GL_BLEND);//Avtiva la funcionalidad para trabajar el canal alfa
+		model = glm::mat4(1.0f);
+		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
-		model = glm::translate(model, ballPos);
-		
+
+		// Posición circular de la pelota en sentido contrario y altura variable
+		float ballX = ballRadius * std::cos(ballAngle);
+		float ballZ = ballRadius * std::sin(ballAngle);
+		model = glm::translate(model, glm::vec3(ballX, ballY, ballZ));
+		model = glm::rotate(model, rotBall, glm::vec3(0.0f, 1.0f, 0.0f)); // Giro sobre sí misma
+
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-	    Ball.Draw(lightingShader); 
-		glDisable(GL_BLEND);  //Desactiva el canal alfa 
+		Ball.Draw(lightingShader);
+		glDisable(GL_BLEND);
 		glBindVertexArray(0);
 	
 
@@ -445,16 +473,88 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 		
 	}
 }
+
 void Animation()
 {
 	if (AnimBall)
 	{
-		ballPos.y += 0.003f * direccion;
+		rotBall += 0.05f; // Rotación de la esfera sobre su propio eje
 
-		if (ballPos.y >= 2.0f || ballPos.y <= 0.0f)
-			direccion *= -1.0f;
+		const float DOS_PI = 2.0f * 3.14159265f;
 
-		rotBall += 0.2f;
+		// 1. Control de velocidad del giro orbital
+		dogAngle += animSpeed;
+		if (dogAngle >= DOS_PI)
+			dogAngle -= DOS_PI;
+
+		// La esfera gira en sentido contrario exactamente a la misma velocidad
+		ballAngle = DOS_PI - dogAngle;
+
+		// 2. Subdivisión del recorrido circular según la cantidad de saltos
+		float duracionSector = DOS_PI / (float)numSaltos;
+		float tSector = std::fmod(dogAngle, duracionSector) / duracionSector; // Progreso en el sector (0.0 a 1.0)
+
+		// 3. Ventana de impacto: el 40% del sector se dedica al salto/golpe; el 60% restante a correr plano
+		float fraccionEncuentro = 0.40f;
+
+		if (tSector < fraccionEncuentro)
+		{
+			// Progreso del encuentro normalizado de 0.0 a 1.0
+			float t = tSector / fraccionEncuentro;
+
+			if (t < 0.20f)
+			{
+				// FASE 1: IMPULSO Y DESCENSO INICIAL
+				float subT = t / 0.20f;
+				dogJump = -0.10f * std::sin(subT * 3.14159f); // Se agacha
+				dogPitch = 18.0f * subT;                      // Baja la cabeza
+				dogRoll = 0.0f;
+
+				// La esfera desciende
+				ballY = 2.2f - (0.6f * subT);
+			}
+			else if (t < 0.50f)
+			{
+				// FASE 2A: SALTO ASCENDENTE Y RECEPCIÓN
+				float subT = (t - 0.20f) / 0.30f;
+				dogJump = std::sin(subT * (3.14159f / 2.0f)) * 1.30f;
+				dogPitch = 18.0f - (48.0f * subT);
+				dogRoll = 25.0f * subT;
+
+				// La esfera alcanza el punto bajo de colisión
+				ballY = 1.6f - (0.4f * subT);
+			}
+			else if (t < 0.75f)
+			{
+				// FASE 2B: COLETAZO Y REBOTE DISPARADO DE LA ESFERA
+				float subT = (t - 0.50f) / 0.25f;
+				dogJump = std::cos(subT * (3.14159f / 2.0f)) * 1.30f;
+				dogPitch = -30.0f * (1.0f - subT);
+				dogRoll = 25.0f * (1.0f - subT);
+
+				// La esfera sale impulsada hacia arriba
+				ballY = 1.20f + (1.20f * std::sin(subT * (3.14159f / 2.0f)));
+			}
+			else
+			{
+				// FASE 3: ATERRIZAJE Y ESTABILIZACIÓN
+				float subT = (t - 0.75f) / 0.25f;
+				dogJump = 0.0f;
+				dogPitch = -12.0f * (1.0f - subT);
+				dogRoll = 0.0f;
+
+				ballY = 2.4f - (0.2f * subT);
+			}
+		}
+		else
+		{
+			// TRAYECTORIA EN PLANO FUERA DEL SALTO
+			dogJump = std::abs(std::sin(dogAngle * 10.0f)) * 0.03f;
+			dogPitch = std::sin(dogAngle * 10.0f) * 3.0f;
+			dogRoll = std::sin(dogAngle * 5.0f) * 2.0f;
+
+			ballY = 2.2f + std::sin(ballAngle * 4.0f) * 0.05f;
+		}
 	}
 }
 
