@@ -35,7 +35,7 @@ void DoMovement();
 void Animation();
 
 // Window dimensions
-const GLuint WIDTH = 800, HEIGHT = 600;
+const GLuint WIDTH = 950, HEIGHT = 700;
 int SCREEN_WIDTH, SCREEN_HEIGHT;
 
 // Camera
@@ -112,19 +112,21 @@ bool AnimBall = false;// Activa o desactiva la animacion
 GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
 GLfloat lastFrame = 0.0f;  	// Time of last frame
 
-float ballRadius = 2.5f;   // Mismo radio que el perrito
-float ballAngle = 0.0f;    // Ángulo en sentido contrario
-float ballY = 2.2f;
+// --- PARÁMETROS DE CONTROL ---
+float velocidadGiro = 0.0006f; // <--- CAMBIA ESTE VALOR PARA HACERLO MÁS LENTO O RÁPIDO
+float radioCirculo = 2.0f;    // Mismo radio exacto para el perro y la pelota
 
-// Variables para animacion del perrito
-float dogAngle = 0.0f; //Angulo trayectoria circular
-float dogRadius = 2.5f; // Radio de ricunfernecia
-float dogJump = 0.0f;//Atura del salto
-float dogPitch = 0.0f; // Inclinación adelante/atrás (impulso y coletazo)
-float dogRoll = 0.0f;// Inclinación lateral del cuerpo
+// Variables de estado de la pelota
+float ballAngle = 3.14159265f; // Inicia en el lado opuesto al perro
+float ballY = 0.65f;       // Altura normal de la pelota (cercana al perro)
 
-float animSpeed = 0.0015f;     // Velocidad general (menor valor = más lento y fluido)
-int numSaltos = 2;
+// Variables de estado del perrito
+float dogAngle = 0.0f;
+float dogJump = 0.0f;
+float dogPitch = 0.0f;
+float dogRoll = 0.0f;
+
+
 
 int main()
 {
@@ -298,34 +300,35 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Piso.Draw(lightingShader);
 
+		
+
+		// --- DIBUJO DEL PERRITO ---
 		model = glm::mat4(1.0f);
-		float dogX = dogRadius * std::cos(dogAngle);
-		float dogZ = dogRadius * std::sin(dogAngle);
+		float dogX = radioCirculo * std::cos(dogAngle);
+		float dogZ = radioCirculo * std::sin(dogAngle);
 		model = glm::translate(model, glm::vec3(dogX, dogJump, dogZ));
 
-		// 1. Orientación hacia el frente en la curva circular
-		model = glm::rotate(model, -dogAngle - glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-		// 2. Inclinación delantera/trasera (impulso y coletazo hacia arriba)
+		// 1. Orientación tangencial mirando hacia adelante en el círculo
+		model = glm::rotate(model, -dogAngle, glm::vec3(0.0f, 1.0f, 0.0f));
+		// 2. Inclinación de impulso y coletazo
 		model = glm::rotate(model, glm::radians(dogPitch), glm::vec3(1.0f, 0.0f, 0.0f));
-
-		// 3. Inclinación lateral (giro de cadera en el aire)
+		// 3. Inclinación lateral al golpear
 		model = glm::rotate(model, glm::radians(dogRoll), glm::vec3(0.0f, 0.0f, 1.0f));
 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
 		Dog.Draw(lightingShader);
 
+		// --- DIBUJO DE LA PELOTA (MISMO RADIO, SENTIDO CONTRARIO) ---
 		model = glm::mat4(1.0f);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
 
-		// Posición circular de la pelota en sentido contrario y altura variable
-		float ballX = ballRadius * std::cos(ballAngle);
-		float ballZ = ballRadius * std::sin(ballAngle);
+		float ballX = radioCirculo * std::cos(ballAngle);
+		float ballZ = radioCirculo * std::sin(ballAngle);
 		model = glm::translate(model, glm::vec3(ballX, ballY, ballZ));
-		model = glm::rotate(model, rotBall, glm::vec3(0.0f, 1.0f, 0.0f)); // Giro sobre sí misma
+		model = glm::rotate(model, glm::radians(rotBall), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Ball.Draw(lightingShader);
@@ -478,82 +481,90 @@ void Animation()
 {
 	if (AnimBall)
 	{
-		rotBall += 0.05f; // Rotación de la esfera sobre su propio eje
+		const float PI = 3.14159265f;
+		const float DOS_PI = 2.0f * PI;
 
-		const float DOS_PI = 2.0f * 3.14159265f;
+		// Giro suave de la pelota en grados
+		rotBall += 0.15f;
 
-		// 1. Control de velocidad del giro orbital
-		dogAngle += animSpeed;
+		// 1. El perro avanza en sentido antihorario usando velocidadGiro
+		dogAngle += velocidadGiro;
 		if (dogAngle >= DOS_PI)
 			dogAngle -= DOS_PI;
 
-		// La esfera gira en sentido contrario exactamente a la misma velocidad
+		// 2. La pelota avanza exactamente en sentido contrario (horario)
 		ballAngle = DOS_PI - dogAngle;
 
-		// 2. Subdivisión del recorrido circular según la cantidad de saltos
-		float duracionSector = DOS_PI / (float)numSaltos;
-		float tSector = std::fmod(dogAngle, duracionSector) / duracionSector; // Progreso en el sector (0.0 a 1.0)
+		// Como van en sentido opuesto a igual velocidad, se cruzan cada PI radianes (en 0 y en PI).
+		// Calculamos qué tan lejos están del punto de cruce (entre 0.0 y PI)
+		float PosEnMediaVuelta = std::fmod(dogAngle, PI);
 
-		// 3. Ventana de impacto: el 40% del sector se dedica al salto/golpe; el 60% restante a correr plano
-		float fraccionEncuentro = 0.40f;
+		// El encuentro ocurre cerca del inicio/fin de cada media vuelta
+		// Normalizamos la distancia al cruce: 0.0 es el choque exacto
+		float ventana = 0.45f; // Qué tantos radianes antes y después dura la acción del salto
 
-		if (tSector < fraccionEncuentro)
+		if (PosEnMediaVuelta > (PI - ventana))
 		{
-			// Progreso del encuentro normalizado de 0.0 a 1.0
-			float t = tSector / fraccionEncuentro;
+			// ANTES DEL IMPACTO: El perro se acerca a la pelota
+			// t va de 0.0 (inicio del acercamiento) a 1.0 (momento exacto del golpe)
+			float t = (PosEnMediaVuelta - (PI - ventana)) / ventana;
 
-			if (t < 0.20f)
+			if (t < 0.35f)
 			{
-				// FASE 1: IMPULSO Y DESCENSO INICIAL
-				float subT = t / 0.20f;
-				dogJump = -0.10f * std::sin(subT * 3.14159f); // Se agacha
-				dogPitch = 18.0f * subT;                      // Baja la cabeza
+				// FASE 1: El perro se agacha para tomar impulso; la pelota empieza a bajar
+				float subT = t / 0.35f;
+				dogJump = -0.06f * std::sin(subT * PI); // Se agacha
+				dogPitch = 18.0f * subT;                // Inclina el cuerpo hacia adelante
 				dogRoll = 0.0f;
 
-				// La esfera desciende
-				ballY = 2.2f - (0.6f * subT);
-			}
-			else if (t < 0.50f)
-			{
-				// FASE 2A: SALTO ASCENDENTE Y RECEPCIÓN
-				float subT = (t - 0.20f) / 0.30f;
-				dogJump = std::sin(subT * (3.14159f / 2.0f)) * 1.30f;
-				dogPitch = 18.0f - (48.0f * subT);
-				dogRoll = 25.0f * subT;
-
-				// La esfera alcanza el punto bajo de colisión
-				ballY = 1.6f - (0.4f * subT);
-			}
-			else if (t < 0.75f)
-			{
-				// FASE 2B: COLETAZO Y REBOTE DISPARADO DE LA ESFERA
-				float subT = (t - 0.50f) / 0.25f;
-				dogJump = std::cos(subT * (3.14159f / 2.0f)) * 1.30f;
-				dogPitch = -30.0f * (1.0f - subT);
-				dogRoll = 25.0f * (1.0f - subT);
-
-				// La esfera sale impulsada hacia arriba
-				ballY = 1.20f + (1.20f * std::sin(subT * (3.14159f / 2.0f)));
+				ballY = 0.65f - (0.10f * subT);          // Baja de 0.65 a 0.55
 			}
 			else
 			{
-				// FASE 3: ATERRIZAJE Y ESTABILIZACIÓN
-				float subT = (t - 0.75f) / 0.25f;
+				// FASE 2: El perro salta e inclina la cola hacia arriba; la pelota baja al punto de golpe
+				float subT = (t - 0.35f) / 0.65f;
+				dogJump = std::sin(subT * (PI / 2.0f)) * 0.45f; // Sube hasta 0.45
+				dogPitch = 18.0f - (48.0f * subT);               // Arquea la cola hacia arriba (-30°)
+				dogRoll = 22.0f * subT;                         // Ladea el cuerpo para el coletazo
+
+				ballY = 0.55f - (0.20f * subT);                  // Baja hasta 0.35 (altura de la cola)
+			}
+		}
+		else if (PosEnMediaVuelta < ventana)
+		{
+			// DESPUÉS DEL IMPACTO: La pelota ya fue golpeada con la cola y sube, el perro aterriza
+			// t va de 0.0 (momento del golpe) a 1.0 (regreso a la normalidad)
+			float t = PosEnMediaVuelta / ventana;
+
+			if (t < 0.60f)
+			{
+				// FASE 3: El perro desciende del salto y la pelota sale impulsada hacia arriba
+				float subT = t / 0.60f;
+				dogJump = std::cos(subT * (PI / 2.0f)) * 0.45f; // Baja de 0.45 a 0.0
+				dogPitch = -30.0f * (1.0f - subT);               // Regresa a su inclinación normal (0°)
+				dogRoll = 22.0f * (1.0f - subT);               // Quita la inclinación lateral
+
+				ballY = 0.35f + (0.40f * std::sin(subT * (PI / 2.0f))); // Rebota hacia arriba hasta 0.75
+			}
+			else
+			{
+				// FASE 4: Estabilización suave
+				float subT = (t - 0.60f) / 0.40f;
 				dogJump = 0.0f;
-				dogPitch = -12.0f * (1.0f - subT);
+				dogPitch = 0.0f;
 				dogRoll = 0.0f;
 
-				ballY = 2.4f - (0.2f * subT);
+				ballY = 0.75f - (0.10f * subT); // Vuelve a su altura orbital de 0.65
 			}
 		}
 		else
 		{
-			// TRAYECTORIA EN PLANO FUERA DEL SALTO
-			dogJump = std::abs(std::sin(dogAngle * 10.0f)) * 0.03f;
-			dogPitch = std::sin(dogAngle * 10.0f) * 3.0f;
-			dogRoll = std::sin(dogAngle * 5.0f) * 2.0f;
+			// FUERA DE LA ZONA DE ENCUENTRO: Trayectoria circular normal
+			dogJump = std::abs(std::sin(dogAngle * 12.0f)) * 0.02f; // Trote ligero
+			dogPitch = std::sin(dogAngle * 12.0f) * 2.0f;
+			dogRoll = 0.0f;
 
-			ballY = 2.2f + std::sin(ballAngle * 4.0f) * 0.05f;
+			ballY = 0.65f; // La pelota mantiene su trayectoria circular limpia a altura constante
 		}
 	}
 }
