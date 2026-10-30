@@ -128,8 +128,8 @@ bool step = false;
 // Trayectoria del perro
 const int PATH_POINTS = 6;
 
-const float X_EDGE = 2.8f;
-const float Z_EDGE = 2.8f;
+const float X_EDGE = 2.4f;
+const float Z_EDGE = 2.4f;
 
 glm::vec3 dogPath[PATH_POINTS] = {
 	glm::vec3(0.0f, 0.0f,  0.0f),       // Centro inicial
@@ -145,7 +145,7 @@ float targetRot = 0.0f;
 
 bool pathLoop = false;
 
-float walkSpeed = 0.0003f;
+float walkSpeed = 0.00099999f;
 float turnSpeed = 0.05f;
 
 // Giro de cabeza
@@ -575,46 +575,161 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 	}
 	
 }
-void Animation() {
+
+void Animation()
+{
 	if (AnimBall)
 	{
 		rotBall += 0.4f;
-		//printf("%f", rotBall);
 	}
-	
+
 	if (AnimDog)
 	{
 		rotDog -= 0.6f;
-		//printf("%f", rotBall);
 	}
-	
-	if (dogAnim == 1) {
-		if (dogPos.z < limiteZ) {   // Solo se mueve mientras no llegue al límite
-			if (!step) { // State 1
-				RLegs += 0.03f;
-				FLegs += 0.03f;
-				head += 0.03f;
-				tail += 0.03f;
-				if (RLegs > 15.0f) { //Condition para detener el movimiento
-					step = true;
+
+	// Maquina de estados del perro
+	float headTarget = 0.0f;
+
+	switch (dogAnim)
+	{
+	case 1: // AVANZAR
+	{
+		glm::vec3 target = dogPath[pathIdx + 1];
+		glm::vec3 d = target - dogPos;
+		float dist = glm::length(d);
+
+		WalkCycle();
+
+		if (dist <= walkSpeed)
+		{
+			dogPos = target;
+			pathIdx++;
+
+			if (pathIdx >= PATH_POINTS - 1)
+			{
+				if (pathLoop)
+				{
+					pathIdx = 0;
+				}
+				else
+				{
+					dogAnim = 0;
+					break;
 				}
 			}
-			else {
-				RLegs -= 0.03f;
-				FLegs -= 0.03f;
-				head -= 0.03f;
-				tail -= 0.03f;
-				if (RLegs < -15.0f) {
-					step = false;
-				}
-			}
-			dogPos.z += 0.0003;
+
+			targetRot = HeadingTo(
+				dogPath[pathIdx],
+				dogPath[pathIdx + 1]
+			);
+
+			dogAnim = 2;
 		}
-		else {
-			dogAnim = 0;   // Llegó al límite: se detiene
+		else
+		{
+			dogPos += (d / dist) * walkSpeed;
+		}
+
+		break;
+	}
+
+	case 2: // GIRAR
+	{
+		WalkCycle();
+
+		float diff = WrapAngle(targetRot - dogRot);
+
+		headTarget = glm::clamp(
+			diff,
+			-headYawMax,
+			headYawMax
+		);
+
+		if (fabs(diff) <= turnSpeed)
+		{
+			dogRot = targetRot;
+			dogAnim = 1;
+		}
+		else if (fabs(headTarget - headYaw) <= 0.5f)
+		{
+			// El cuerpo gira después de la cabeza
+			dogRot += (diff > 0.0f)
+				? turnSpeed
+				: -turnSpeed;
+		}
+
+		break;
+	}
+
+	default:
+		break;
+	}
+
+	// Movimiento suave de la cabeza
+	float headDiff = headTarget - headYaw;
+
+	if (fabs(headDiff) <= headTurnSpeed)
+	{
+		headYaw = headTarget;
+	}
+	else
+	{
+		headYaw += (headDiff > 0.0f)
+			? headTurnSpeed
+			: -headTurnSpeed;
+	}
+}
+
+// Movimiento de patas, cabeza y cola
+void WalkCycle()
+{
+	if (!step)
+	{
+		RLegs += 0.03f;
+		FLegs += 0.03f;
+		head += 0.03f;
+		tail += 0.03f;
+
+		if (RLegs > 15.0f)
+		{
+			step = true;
 		}
 	}
-	
+	else
+	{
+		RLegs -= 0.03f;
+		FLegs -= 0.03f;
+		head -= 0.03f;
+		tail -= 0.03f;
+
+		if (RLegs < -15.0f)
+		{
+			step = false;
+		}
+	}
+}
+
+
+// Normalizar angulo
+float WrapAngle(float angle)
+{
+	while (angle > 180.0f)
+		angle -= 360.0f;
+
+	while (angle <= -180.0f)
+		angle += 360.0f;
+
+	return angle;
+}
+
+
+// Calcular orientación
+float HeadingTo(glm::vec3 from, glm::vec3 to)
+{
+	return glm::degrees(
+		atan2(to.x - from.x, to.z - from.z)
+	);
 }
 
 void MouseCallback(GLFWwindow *window, double xPos, double yPos)
