@@ -34,8 +34,12 @@ void MouseCallback(GLFWwindow *window, double xPos, double yPos);
 void DoMovement();
 void Animation();
 
+void WalkCycle();
+float WrapAngle(float angle);
+float HeadingTo(glm::vec3 from, glm::vec3 to);
+
 // Window dimensions
-const GLuint WIDTH = 800, HEIGHT = 600;
+const GLuint WIDTH = 1200, HEIGHT = 900;
 int SCREEN_WIDTH, SCREEN_HEIGHT;
 
 // Camera
@@ -107,16 +111,47 @@ glm::vec3 Light1 = glm::vec3(0);
 float rotBall = 0.0f;
 bool AnimBall = false;
 bool AnimDog = false;
+// Animación
 float rotDog = 0.0f;
 int dogAnim = 0;
+
 float FLegs = 0.0f;
 float RLegs = 0.0f;
 float head = 0.0f;
 float tail = 0.0f;
-glm::vec3 dogPos (0.0f,0.0f,0.0f);
-float limiteZ = 2.4f;
+
+glm::vec3 dogPos(0.0f, 0.0f, 0.0f);
 float dogRot = 0.0f;
+
 bool step = false;
+
+// Trayectoria del perro
+const int PATH_POINTS = 6;
+
+const float X_EDGE = 2.8f;
+const float Z_EDGE = 2.8f;
+
+glm::vec3 dogPath[PATH_POINTS] = {
+	glm::vec3(0.0f, 0.0f,  0.0f),       // Centro inicial
+	glm::vec3(0.0f, 0.0f,  Z_EDGE),     // Avanza al extremo
+	glm::vec3(X_EDGE, 0.0f, Z_EDGE),    // Gira a la derecha
+	glm::vec3(-X_EDGE, 0.0f, -Z_EDGE),  // Diagonal a esquina opuesta
+	glm::vec3(X_EDGE, 0.0f, -Z_EDGE),   // Avanza a la siguiente esquina
+	glm::vec3(0.0f, 0.0f,  0.0f)        // Regresa al centro
+};
+
+int pathIdx = 0;
+float targetRot = 0.0f;
+
+bool pathLoop = false;
+
+float walkSpeed = 0.0003f;
+float turnSpeed = 0.05f;
+
+// Giro de cabeza
+float headYaw = 0.0f;
+float headYawMax = 45.0f;
+float headTurnSpeed = 0.15f;
 
 
 
@@ -315,12 +350,25 @@ int main()
 		modelTemp= model = glm::rotate(model, glm::radians(dogRot), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		DogBody.Draw(lightingShader);
-		//Head
+		// Head
 		model = modelTemp;
 		model = glm::translate(model, glm::vec3(0.0f, 0.093f, 0.208f));
-		model = glm::rotate(model, glm::radians(head), glm::vec3(0.0f, 0.0f, 1.0f));
+
+		model = glm::rotate(
+			model,
+			glm::radians(headYaw),
+			glm::vec3(0.0f, 1.0f, 0.0f)
+		);
+
+		model = glm::rotate(
+			model,
+			glm::radians(head),
+			glm::vec3(0.0f, 0.0f, 1.0f)
+		);
+
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		HeadDog.Draw(lightingShader);
+
 		//Tail 
 		model = modelTemp;
 		model = glm::translate(model, glm::vec3(0.0f, 0.026f, -0.288f));
@@ -505,10 +553,25 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 		
 	}
 
-	if (keys[GLFW_KEY_B])
+	// B: iniciar recorrido
+	if (key == GLFW_KEY_B &&
+		action == GLFW_PRESS &&
+		dogAnim == 0)
 	{
-		dogAnim = 1;
+		pathIdx = 0;
+		dogPos = dogPath[0];
 
+		dogRot = HeadingTo(
+			dogPath[0],
+			dogPath[1]
+		);
+
+		targetRot = dogRot;
+
+		headYaw = 0.0f;
+		step = false;
+
+		dogAnim = 1;
 	}
 	
 }
@@ -571,3 +634,11 @@ void MouseCallback(GLFWwindow *window, double xPos, double yPos)
 
 	camera.ProcessMouseMovement(xOffset, yOffset);
 }
+
+/*
+Cambiar la trayectoria solicitada
+animaciones: 
+animacion de giro
+animacion de camina
+
+*/
