@@ -1,6 +1,6 @@
-// Previo 11
+// Practica 11
 // Valdez Hernandez Alan Josue
-// Fecha de entrega: 27 de octubre del 2026
+// Fecha de entrega: 1 de noviembre del 2026
 // Numero de cuenta: 421122006
 #include <iostream>
 #include <cmath>
@@ -171,7 +171,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Previo 11 - Alan Valdez", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 11 - Alan Valdez", nullptr, nullptr);
 
 	if (nullptr == window)
 	{
