@@ -1,6 +1,6 @@
-// Previo 12
+// Practica 12
 // Valdez Hernandez Alan Josue
-// Fecha de entrega: 3 de noviembre del 2026
+// Fecha de entrega: 8 de noviembre del 2026
 // Numero de cuenta: 421122006
 #include <iostream>
 #include <cmath>
@@ -118,18 +118,34 @@ float FLeftLeg = 0.0f;
 float BRightLeg = 0.0f;
 float BLeftLeg = 0.0f;
 
+// Variables para acostar al perrito
+float bodyTilt = 0.0f;
+float bodyOffsetY = 0.0f;
+float bodyRoll = 0.0f;
 
 
 //KeyFrames
-float dogPosX, dogPosY, dogPosZ;
+float dogPosX = 0.0f;
+float dogPosY = 0.0f;
+float dogPosZ = 0.0f;
 
-#define MAX_FRAMES 12
-int i_max_steps = 790;
+#define MAX_FRAMES 16
+int i_max_steps = 1200;
 int i_curr_steps = 0;
 typedef struct _frame {
 
 	float rotDog;
 	float rotDogInc;
+	// Para inclinar al perrito
+	float bodyTilt;
+	float bodyTiltInc;
+
+	float bodyOffsetY;
+	float bodyOffsetYInc;
+
+	float bodyRoll;
+	float bodyRollInc;
+	//------------------
 	float dogPosX;
 	float dogPosY;
 	float dogPosZ;
@@ -162,9 +178,14 @@ FRAME KeyFrame[MAX_FRAMES];
 int FrameIndex = 0;			//introducir datos
 bool play = false;
 int playIndex = 0;
+bool lyingFrameAdded = false;
 
 void saveFrame(void)
 {
+	if (FrameIndex >= MAX_FRAMES) {
+		std::cout << "Se alcanzo el maximo de Keyframes.\n";
+		return;
+	}
 
 	printf("frameindex %d\n", FrameIndex);
 
@@ -173,6 +194,13 @@ void saveFrame(void)
 	KeyFrame[FrameIndex].dogPosZ = dogPosZ;
 
 	KeyFrame[FrameIndex].rotDog = rotDog;
+
+	//Para rotar al perrito:
+	KeyFrame[FrameIndex].bodyTilt = bodyTilt;
+	KeyFrame[FrameIndex].bodyOffsetY = bodyOffsetY;
+	KeyFrame[FrameIndex].bodyRoll = bodyRoll;
+	//---------------------
+
 	KeyFrame[FrameIndex].head = head;
 
 	//Patas y cola:
@@ -182,6 +210,7 @@ void saveFrame(void)
 	KeyFrame[FrameIndex].BRightLeg = BRightLeg;
 	KeyFrame[FrameIndex].BLeftLeg = BLeftLeg;
 
+	KeyFrame[FrameIndex].tail = tail;
 
 	FrameIndex++;
 }
@@ -194,6 +223,12 @@ void resetElements(void)
 	head = KeyFrame[0].head;
 
 	rotDog = KeyFrame[0].rotDog;
+
+	//Para rotal al perrito:
+	bodyTilt = KeyFrame[0].bodyTilt;
+	bodyOffsetY = KeyFrame[0].bodyOffsetY;
+	bodyRoll = KeyFrame[0].bodyRoll;
+	//-------------------------
 
 	// Patas y cola
 	FRightLeg = KeyFrame[0].FRightLeg;
@@ -214,6 +249,21 @@ void interpolation(void)
 	KeyFrame[playIndex].headInc = (KeyFrame[playIndex + 1].head - KeyFrame[playIndex].head) / i_max_steps;
 
 	KeyFrame[playIndex].rotDogInc = (KeyFrame[playIndex + 1].rotDog - KeyFrame[playIndex].rotDog) / i_max_steps;
+
+	//Rotar al perrito
+	KeyFrame[playIndex].bodyTiltInc =
+		(KeyFrame[playIndex + 1].bodyTilt -
+			KeyFrame[playIndex].bodyTilt) / i_max_steps;
+
+	KeyFrame[playIndex].bodyOffsetYInc =
+		(KeyFrame[playIndex + 1].bodyOffsetY -
+			KeyFrame[playIndex].bodyOffsetY) / i_max_steps;
+
+	KeyFrame[playIndex].bodyRollInc =
+		(KeyFrame[playIndex + 1].bodyRoll -
+			KeyFrame[playIndex].bodyRoll) / i_max_steps;
+
+	//---------------------
 
 	// Patas y cola:
 	KeyFrame[playIndex].FRightLegInc =
@@ -238,7 +288,138 @@ void interpolation(void)
 
 }
 
+// Crea la secuencia para sentarse, saludar y acostarse
+void CreateSitWaveAnimation()
+{
+	FrameIndex = 0;
 
+	// Pose 1: Perrito de pie
+	dogPosX = 0.0f;
+	dogPosY = 0.0f;
+	dogPosZ = 0.0f;
+	rotDog = 0.0f;
+
+	bodyTilt = 0.0f;
+	bodyOffsetY = 0.0f;
+	bodyRoll = 0.0f;
+
+	head = 0.0f;
+	tail = 0.0f;
+
+	FLeftLeg = 0.0f;
+	FRightLeg = 0.0f;
+	BLeftLeg = 0.0f;
+	BRightLeg = 0.0f;
+
+	saveFrame();
+
+	// Pose 2: Comienza a sentarse
+	bodyOffsetY = -0.025f;
+	BLeftLeg = 28.0f;
+	BRightLeg = 28.0f;
+	FLeftLeg = -8.0f;
+	FRightLeg = -8.0f;
+	tail = 8.0f;
+	saveFrame();
+
+	// Pose 3: Perrito sentado
+	bodyOffsetY = -0.055f;
+	bodyTilt = -5.0f;
+	BLeftLeg = 62.0f;
+	BRightLeg = 62.0f;
+	FLeftLeg = 0.0f;
+	FRightLeg = 0.0f;
+	head = -5.0f;
+	tail = -8.0f;
+	saveFrame();
+
+	// Pose 4: Levanta la pata delantera derecha
+	FRightLeg = -58.0f;
+	head = 4.0f;
+	tail = 12.0f;
+	saveFrame();
+
+	// Pose 5: Primer movimiento del saludo
+	FRightLeg = -78.0f;
+	tail = -12.0f;
+	saveFrame();
+
+	// Pose 6: Segundo movimiento del saludo
+	FRightLeg = -48.0f;
+	tail = 12.0f;
+	saveFrame();
+
+	// Pose 7: Regresa a la posicion de saludo
+	FRightLeg = -72.0f;
+	tail = -8.0f;
+	saveFrame();
+
+	// Pose 8: Mantiene la pata levantada
+	FRightLeg = -58.0f;
+	tail = 0.0f;
+	saveFrame();
+
+	// Pose 9: Comienza a recostarse
+	bodyOffsetY = -0.085f;
+	bodyTilt = -8.0f;
+	bodyRoll = 20.0f;
+
+	FLeftLeg = 15.0f;
+	FRightLeg = -15.0f;
+	BLeftLeg = 35.0f;
+	BRightLeg = -35.0f;
+
+	head = -12.0f;
+	tail = 15.0f;
+	saveFrame();
+
+	// Pose 10: Se inclina hacia un costado
+	bodyOffsetY = -0.12f;
+	bodyTilt = 0.0f;
+	bodyRoll = 55.0f;
+
+	FLeftLeg = 45.0f;
+	FRightLeg = -45.0f;
+	BLeftLeg = 50.0f;
+	BRightLeg = -50.0f;
+
+	head = -20.0f;
+	tail = 20.0f;
+	saveFrame();
+
+	// Pose 11: Queda recostado de lado
+	bodyOffsetY = -0.13f;
+	bodyTilt = 0.0f;
+	bodyRoll = 90.0f;
+
+	FLeftLeg = 75.0f;
+	FRightLeg = -75.0f;
+	BLeftLeg = 65.0f;
+	BRightLeg = -65.0f;
+
+	head = -30.0f;
+	tail = 25.0f;
+	saveFrame();
+
+	// Pose 12: Mantiene la posicion final
+	bodyOffsetY = -0.13f;
+	bodyTilt = 0.0f;
+	bodyRoll = 90.0f;
+
+	FLeftLeg = 85.0f;
+	FRightLeg = -85.0f;
+	BLeftLeg = 70.0f;
+	BRightLeg = -70.0f;
+
+	head = -35.0f;
+	tail = 15.0f;
+	saveFrame();
+
+	resetElements();
+
+	std::cout << "Secuencia de animacion creada con "
+		<< FrameIndex << " Keyframes." << std::endl;
+}
 
 // Deltatime
 GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
@@ -256,7 +437,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Previo 12 - Alan Valdez", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 12 - Alan Valdez", nullptr, nullptr);
 
 	if (nullptr == window)
 	{
@@ -318,6 +499,18 @@ int main()
 		KeyFrame[i].incZ = 0;
 		KeyFrame[i].rotDog = 0;
 		KeyFrame[i].rotDogInc = 0;
+		// Inicializar movimientos del cuerpo
+		KeyFrame[i].bodyTilt = 0;
+		KeyFrame[i].bodyTiltInc = 0;
+
+		KeyFrame[i].bodyOffsetY = 0;
+		KeyFrame[i].bodyOffsetYInc = 0;
+
+		KeyFrame[i].bodyRoll = 0;
+		KeyFrame[i].bodyRollInc = 0;
+		//-----------------------------
+
+
 		KeyFrame[i].head = 0;
 		KeyFrame[i].headInc = 0;
 
@@ -337,7 +530,6 @@ int main()
 		KeyFrame[i].tail = 0;
 		KeyFrame[i].tailInc = 0;
 	}
-
 
 	// First, set the container's VAO (and VBO)
 	GLuint VBO, VAO, EBO;
@@ -468,8 +660,25 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
 		//Body
-		modelTemp = model = glm::translate(model, glm::vec3(dogPosX, dogPosY, dogPosZ));
-		modelTemp = model = glm::rotate(model, glm::radians(rotDog), glm::vec3(0.0f, 1.0f, 0.0f));
+		//Body
+		modelTemp = glm::mat4(1.0f);
+
+		modelTemp = glm::translate(modelTemp,
+			glm::vec3(dogPosX, dogPosY + bodyOffsetY, dogPosZ));
+
+		modelTemp = glm::rotate(modelTemp,
+			glm::radians(rotDog), glm::vec3(0.0f, 1.0f, 0.0f));
+
+		// Rotacion lateral para acostar al perrito
+		modelTemp = glm::rotate(modelTemp,
+			glm::radians(bodyRoll), glm::vec3(0.0f, 0.0f, 1.0f));
+
+		// Inclinacion del cuerpo
+		model = modelTemp;
+
+		model = glm::rotate(model,
+			glm::radians(bodyTilt), glm::vec3(1.0f, 0.0f, 0.0f));
+
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		DogBody.Draw(lightingShader);
 		//Head
@@ -751,39 +960,7 @@ void DoMovement()
 // Is called whenever a key is pressed/released via GLFW
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
-
-	if (keys[GLFW_KEY_L])
-	{
-		if (play == false && (FrameIndex > 1))
-		{
-
-			resetElements();
-			//First Interpolation				
-			interpolation();
-
-			play = true;
-			playIndex = 0;
-			i_curr_steps = 0;
-		}
-		else
-		{
-			play = false;
-		}
-
-	}
-
-	if (keys[GLFW_KEY_K])
-	{
-		if (FrameIndex < MAX_FRAMES)
-		{
-			saveFrame();
-		}
-
-	}
-
-
-
-	if (GLFW_KEY_ESCAPE == key && GLFW_PRESS == action)
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
@@ -791,75 +968,175 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 	if (key >= 0 && key < 1024)
 	{
 		if (action == GLFW_PRESS)
-		{
 			keys[key] = true;
-		}
+
 		else if (action == GLFW_RELEASE)
-		{
 			keys[key] = false;
-		}
 	}
 
-	if (keys[GLFW_KEY_SPACE])
+	// Guardar una postura con K
+	if (key == GLFW_KEY_K && action == GLFW_PRESS)
 	{
-		active = !active;
-		if (active)
-		{
-			Light1 = glm::vec3(0.2f, 0.8f, 1.0f);
+		if (!play && !lyingFrameAdded && FrameIndex < MAX_FRAMES - 1)
+			saveFrame();
+	}
 
+	// Reproducir movimientos y finalmente acostarse con L
+	if (key == GLFW_KEY_L && action == GLFW_PRESS)
+	{
+		if (!play)
+		{
+			// Si no se guardaron movimientos, guardar la postura actual
+			if (FrameIndex == 0)
+			{
+				saveFrame();
+			}
+			else
+			{
+				// Recuperar la ultima postura guardada
+				dogPosX = KeyFrame[FrameIndex - 1].dogPosX;
+				dogPosY = KeyFrame[FrameIndex - 1].dogPosY;
+				dogPosZ = KeyFrame[FrameIndex - 1].dogPosZ;
+
+				rotDog = KeyFrame[FrameIndex - 1].rotDog;
+				bodyTilt = KeyFrame[FrameIndex - 1].bodyTilt;
+				bodyOffsetY = KeyFrame[FrameIndex - 1].bodyOffsetY;
+				bodyRoll = KeyFrame[FrameIndex - 1].bodyRoll;
+
+				head = KeyFrame[FrameIndex - 1].head;
+
+				FRightLeg = KeyFrame[FrameIndex - 1].FRightLeg;
+				FLeftLeg = KeyFrame[FrameIndex - 1].FLeftLeg;
+				BRightLeg = KeyFrame[FrameIndex - 1].BRightLeg;
+				BLeftLeg = KeyFrame[FrameIndex - 1].BLeftLeg;
+
+				tail = KeyFrame[FrameIndex - 1].tail;
+			}
+
+			// Agregar el movimiento final para acostarse
+			if (!lyingFrameAdded)
+			{
+				bodyOffsetY = -0.13f;
+				bodyTilt = 0.0f;
+				bodyRoll = 90.0f;
+
+				FLeftLeg = 85.0f;
+				FRightLeg = -85.0f;
+				BLeftLeg = 70.0f;
+				BRightLeg = -70.0f;
+
+				head = -35.0f;
+				tail = 15.0f;
+
+				saveFrame();
+				lyingFrameAdded = true;
+			}
+
+			// Iniciar reproducción desde el primer KeyFrame
+			resetElements();
+
+			playIndex = 0;
+			i_curr_steps = 0;
+
+			interpolation();
+			play = true;
 		}
 		else
 		{
-			Light1 = glm::vec3(0);//Cuado es solo un valor en los 3 vectores pueden dejar solo una componente
+			play = false;
 		}
 	}
 
+	// Reiniciar la secuencia con R
+	if (key == GLFW_KEY_R && action == GLFW_PRESS)
+	{
+		play = false;
+		FrameIndex = 0;
+		playIndex = 0;
+		i_curr_steps = 0;
+		lyingFrameAdded = false;
 
+		dogPosX = 0.0f;
+		dogPosY = 0.0f;
+		dogPosZ = 0.0f;
+
+		rotDog = 0.0f;
+		bodyTilt = 0.0f;
+		bodyOffsetY = 0.0f;
+		bodyRoll = 0.0f;
+
+		head = 0.0f;
+		tail = 0.0f;
+
+		FRightLeg = 0.0f;
+		FLeftLeg = 0.0f;
+		BRightLeg = 0.0f;
+		BLeftLeg = 0.0f;
+
+		std::cout << "Secuencia reiniciada." << std::endl;
+	}
+
+	// Activar o desactivar iluminacion con ESPACIO
+	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+	{
+		active = !active;
+
+		if (active)
+			Light1 = glm::vec3(0.2f, 0.8f, 1.0f);
+		else
+			Light1 = glm::vec3(0.0f);
+	}
 }
-void Animation() {
 
+void Animation()
+{
 	if (play)
 	{
-		if (i_curr_steps >= i_max_steps) //end of animation between frames?
+		if (i_curr_steps >= i_max_steps)
 		{
 			playIndex++;
-			if (playIndex > FrameIndex - 2)	//end of total animation?
+
+			if (playIndex >= FrameIndex - 1)
 			{
-				printf("termina anim\n");
+				printf("termina animacion\n");
+
 				playIndex = 0;
 				play = false;
 			}
-			else //Next frame interpolations
+			else
 			{
-				i_curr_steps = 0; //Reset counter
-				//Interpolation
+				i_curr_steps = 0;
 				interpolation();
 			}
 		}
 		else
 		{
-			//Draw animation
+			// Movimiento del perrito
 			dogPosX += KeyFrame[playIndex].incX;
 			dogPosY += KeyFrame[playIndex].incY;
 			dogPosZ += KeyFrame[playIndex].incZ;
-			head += KeyFrame[playIndex].headInc;
 
 			rotDog += KeyFrame[playIndex].rotDogInc;
 
-			i_curr_steps++;
+			// Movimiento del cuerpo
+			bodyTilt += KeyFrame[playIndex].bodyTiltInc;
+			bodyOffsetY += KeyFrame[playIndex].bodyOffsetYInc;
+			bodyRoll += KeyFrame[playIndex].bodyRollInc;
 
-			// patas y cola
+			// Movimiento de cabeza y cola
+			head += KeyFrame[playIndex].headInc;
+			tail += KeyFrame[playIndex].tailInc;
+
+			// Movimiento de las patas
 			FRightLeg += KeyFrame[playIndex].FRightLegInc;
 			FLeftLeg += KeyFrame[playIndex].FLeftLegInc;
 
 			BRightLeg += KeyFrame[playIndex].BRightLegInc;
 			BLeftLeg += KeyFrame[playIndex].BLeftLegInc;
 
-			tail += KeyFrame[playIndex].tailInc;
+			i_curr_steps++;
 		}
-
 	}
-
 }
 
 void MouseCallback(GLFWwindow* window, double xPos, double yPos)
