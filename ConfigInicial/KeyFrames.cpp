@@ -28,6 +28,11 @@
 #include "Camera.h"
 #include "Model.h"
 
+//Para el cielo
+#include "Texture.h"
+
+#include <vector>
+
 
 // Function prototypes
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -474,7 +479,8 @@ int main()
 
 	Shader lightingShader("Shader/lighting.vs", "Shader/lighting.frag");
 	Shader lampShader("Shader/lamp.vs", "Shader/lamp.frag");
-
+	//Para el cielo
+	Shader skyboxshader("Shader/SkyBox.vs", "Shader/SkyBox.frag");
 
 	//models
 	Model DogBody((char*)"Models/DogBody.obj");
@@ -531,6 +537,52 @@ int main()
 		KeyFrame[i].tailInc = 0;
 	}
 
+	//para el cielo
+	GLfloat skyboxVertices[] = {
+		// Positions
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		-1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f
+	};
+
 	// First, set the container's VAO (and VBO)
 	GLuint VBO, VAO, EBO;
 	glGenVertexArrays(1, &VAO);
@@ -553,6 +605,37 @@ int main()
 	lightingShader.Use();
 	glUniform1i(glGetUniformLocation(lightingShader.Program, "Material.difuse"), 0);
 	glUniform1i(glGetUniformLocation(lightingShader.Program, "Material.specular"), 1);
+
+	// Configuracion del Skybox
+	GLuint skyboxVBO, skyboxVAO;
+
+	glGenVertexArrays(1, &skyboxVAO);
+	glGenBuffers(1, &skyboxVBO);
+
+	glBindVertexArray(skyboxVAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices),
+		skyboxVertices, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
+		3 * sizeof(GLfloat), (GLvoid*)0);
+
+	glBindVertexArray(0);
+
+
+	// Cargar las seis texturas del Skybox
+	std::vector<const GLchar*> faces;
+
+	faces.push_back("SkyBox/right.jpg");
+	faces.push_back("SkyBox/left.jpg");
+	faces.push_back("SkyBox/top.jpg");
+	faces.push_back("SkyBox/bottom.jpg");
+	faces.push_back("SkyBox/back.jpg");
+	faces.push_back("SkyBox/front.jpg");
+
+	GLuint cubemapTexture = TextureLoading::LoadCubemap(faces);
 
 
 	glm::mat4 projection = glm::perspective(camera.GetZoom(), (GLfloat)SCREEN_WIDTH / (GLfloat)SCREEN_HEIGHT, 0.1f, 100.0f);
@@ -764,13 +847,42 @@ int main()
 
 		glBindVertexArray(0);
 
+		//para el cielo
+		// Dibujar Skybox
+		glDepthFunc(GL_LEQUAL);
+
+		skyboxshader.Use();
+
+		view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
+
+		glUniformMatrix4fv(
+			glGetUniformLocation(skyboxshader.Program, "view"),
+			1, GL_FALSE, glm::value_ptr(view));
+
+		glUniformMatrix4fv(
+			glGetUniformLocation(skyboxshader.Program, "projection"),
+			1, GL_FALSE, glm::value_ptr(projection));
+
+		glBindVertexArray(skyboxVAO);
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		glBindVertexArray(0);
+
+		glDepthFunc(GL_LESS);
 
 		// Swap the screen buffers
 		glfwSwapBuffers(window);
 	}
 
 
-
+	glDeleteVertexArrays(1, &skyboxVAO);
+	glDeleteBuffers(1, &skyboxVBO);
+	glDeleteTextures(1, &cubemapTexture);
+	//-----------------------------------
 
 	// Terminate GLFW, clearing any resources allocated by GLFW.
 	glfwTerminate();
