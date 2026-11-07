@@ -1,4 +1,4 @@
-// Practica 12
+// Skybox
 // Valdez Hernandez Alan Josue
 // Fecha de entrega: 8 de noviembre del 2026
 // Numero de cuenta: 421122006
@@ -442,7 +442,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 12 - Alan Valdez", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Skybox - Alan Valdez", nullptr, nullptr);
 
 	if (nullptr == window)
 	{
